@@ -7,7 +7,7 @@ Shared Repository for Rutgers Bootcamp Final Project
 
 ## Why We Chose This Topic:
 
-After much deliberation and consideration of various datasets, sources, and general topics, we’ve decided to explore Life Expectancy, Happiness Scores, and how these two data points relate to each other on an international scale. As a team, we’ve been drawn mainly to datasets relating to geography and geopolitics, as such topics are ripe for interesting visualizations and offer broad insights into international trends. We’ve ultimately decided to explore Life Expectancy and Happiness as our topic because these datasets are relatively manageable and direct while still offering wide potential for feature analysis, visualizations, and unique insights.
+After much deliberation and consideration of various datasets, sources, and general topics, we’ve decided to explore Life Expectancy as well as a variety of related factors including ----, ----, ----, and Happiness Score on an international scale. As a team, we’ve been drawn mainly to datasets relating to geography and geopolitics, as such topics are ripe for interesting visualizations of broad and specific international trends. We’ve ultimately decided to explore Life Expectancy and the factors that might influence it as these datasets are relatively manageable and direct while still offering wide potential for feature analysis, visualizations, and unique insights.
 
 ## Data Sources:
 
@@ -44,16 +44,6 @@ The team is mainly communicating via Slack. Additionally, we have been and plan 
   - Week 2 - Visualization Ideas
   - Week 3 - Presentation
   - Week 4 - Helping Other Team Members
-
-## Machine Learning:
-
-### Which model did you choose and why?
-
-### How are you training the model?
-
-### What is the model’s accuracy?
-
-### How does this model work?
 
 ## Tools and Tech
 
