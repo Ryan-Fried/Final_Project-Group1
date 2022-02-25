@@ -1,0 +1,6 @@
+PostgreSQL (Database)
+Jupyter Notebook (Conduct Multiple Linear Regression Analysis)
+R (clean and prepare data)
+Python (CoLanguage
+AWS (cloud server)
+
