@@ -1,3 +1,4 @@
+Tools:
 PostgreSQL (Database)
 Jupyter Notebook (Conduct Multiple Linear Regression Analysis)
 R (clean and prepare data)
