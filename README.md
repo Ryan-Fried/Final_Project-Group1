@@ -14,7 +14,7 @@
 ### Draft ERD
     
      
-   ![ERD_Draft](Resources/ERD_Draft.PNG)
+   ![ERD_Draft](ERD_Draft.PNG)
    
 
 
@@ -28,7 +28,7 @@
     Came across some new concepts that were tried during the project and listed them in document listed below.
     Dicument name - New_concepts_learned.docx
 
-    
+
 
 
 
