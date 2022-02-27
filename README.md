@@ -7,13 +7,12 @@ Shared Repository for Rutgers Bootcamp Final Project
 
 ## Why We Chose This Topic:
 
-After much deliberation and consideration of various datasets, sources, and general topics, we’ve decided to explore Life Expectancy as well as a variety of related factors including ----, ----, ----, and Happiness Score on an international scale. As a team, we’ve been drawn mainly to datasets relating to geography and geopolitics, as such topics are ripe for interesting visualizations of broad and specific international trends. We’ve ultimately decided to explore Life Expectancy and the factors that might influence it as these datasets are relatively manageable and direct while still offering wide potential for feature analysis, visualizations, and unique insights.
+After much deliberation and consideration of various datasets, sources, and general topics, we’ve decided to explore Life Expectancy as well as a variety of related factors encompassing health, society, economics, and geography on an international scale. As a team, we’ve been drawn mainly to datasets relating to geography and geopolitics, as such topics are ripe for interesting visualizations of broad and specific international trends. We’ve ultimately decided to explore Life Expectancy and the factors that might influence it as these datasets are relatively manageable and direct while still offering wide potential for feature analysis, visualizations, and unique insights.
 
 ## Data Sources:
 
-### Source 1:
-
-### Source 2:
+### WHO Life Expectancy
+This is our main dataset from which we are building our project. Using this dataset to guide us, we have also brought in a wide variety of features from more extensive or specific additional databases, listed in detail in the following document: 
 
 ## What Questions Do We Hope to Answer?
 
@@ -52,7 +51,7 @@ Outline of the workflow we plan to impliment for our project:
 
 ### Data Cleaning and Analysis
 - R - Cleaning, preparing, and performing statistical analysis on data
-- Python - Primary coding language used throughout the project
+- Python - Used to connect to our database, perform the ETL process, and implement our Machine Learning models
 ### Database Storage
 - PostgreSQL - Database
 ### Machine Learning
