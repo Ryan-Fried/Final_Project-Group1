@@ -16,10 +16,10 @@ Our main dataset, Life Expectancy data from the World Bank, is the baseline for 
 
 ## What Questions Do We Hope to Answer?
 
-- We intend to explore the relationship between Life Expectancy and the various features that effect that metric. In doing so we are asking which factors, if any, have the most significant influence on Life Expectancy, and which of these factors are closely correlated with each other. For example, we are particularly interested in examining the relationship between Life Expectancy and Happiness Score.
-- We will attempt to predict Life Expectancy using these various factors. Additionally, we will attempt to predict the development status of a country using Life Expectancy and the other related factors. 
+- We intend to explore the relationship between life expectancy and the various features that effect that metric. In doing so we are asking which factors, if any, have the most significant influence on life expectancy, and which of these factors are closely correlated with each other. For example, we are particularly interested in examining the relationship between life expectancy and Happiness Score.
+- We will attempt to predict life expectancy using these various factors. Additionally, we will attempt to predict the development status of a country using life expectancy and the other related factors. 
 - We will use the process of clustering to explore the relationships, similarities, and differences between countries as would be determined by these factors.
-- Essentially, we hope that by posing these questions and performing this analysis, we might be able to determine which factors carry the most weight in influenceing each other, with Life Expectancy as our central focus. As this data represents reality, it may also serve real world applications. If a country were to strive to improve life expectancy, or evolve any one of these metrics, our project may shed some light on the most direct and effective ways of doing so and improving the lives of its citizens.
+- Essentially, we hope that by posing these questions and performing this analysis, we might be able to determine which factors carry the most weight in influenceing each other, with life expectancy as our central focus. As this data represents reality, it may also serve real world applications. If a country were to strive to improve life expectancy, or evolve any one of these metrics, our project may shed some light on the most direct and effective ways of doing so and improving the lives of its citizens.
 
 ## Communication Protocols?
 
@@ -48,7 +48,7 @@ The team is mainly communicating via Slack. Additionally, we have been and plan 
 ## Tools and Tech
 
 Outline of the workflow we plan to impliment for our project:
-![Prog_Design (1)](https://user-images.githubusercontent.com/91569387/155812890-7d8301ba-9429-46e5-966f-d42199a26bb5.png)
+![Prog_Design (2)](https://user-images.githubusercontent.com/91569387/155899322-5182f176-2b76-49e0-8232-71a2c3780d84.png)
 
 ### Data Cleaning and Analysis
 - R - Cleaning, preparing, and performing statistical analysis on data
