@@ -11,14 +11,15 @@ After much deliberation and consideration of various datasets, sources, and gene
 
 ## Data Sources:
 
-### WHO Life Expectancy
-This is our main dataset from which we are building our project. Using this dataset to guide us, we have also brought in a wide variety of features from more extensive or specific additional databases, listed in detail in the following document: 
+Our main dataset, Life Expectancy data from the World Bank, is the baseline for which we are building and expanding our project. Using this dataset to guide us, we have also brought in a wide variety of features from more extensive or specific additional databases, listed in detail in the following document: 
+[Source_References.xlsx](https://github.com/Ryan-Fried/Final_Project-Group1/files/8149293/Source_References.xlsx)
 
 ## What Questions Do We Hope to Answer?
 
-### Question 1:
-
-### Question 2:
+- We intend to explore the relationship between Life Expectancy and the various features that effect that metric. In doing so we are asking which factors, if any, have the most significant influence on Life Expectancy, and which of these factors are closely correlated with each other. For example, we are particularly interested in examining the relationship between Life Expectancy and Happiness Score.
+- We will attempt to predict Life Expectancy using these various factors. Additionally, we will attempt to predict the development status of a country using Life Expectancy and the other related factors. 
+- We will use the process of clustering to explore the relationships, similarities, and differences between countries as would be determined by these factors.
+- Essentially, we hope that by posing these questions and performing this analysis, we might be able to determine which factors carry the most weight in influenceing each other, with Life Expectancy as our central focus. As this data represents reality, it may also serve real world applications. If a country were to strive to improve life expectancy, or evolve any one of these metrics, our project may shed some light on the most direct and effective ways of doing so and improving the lives of its citizens.
 
 ## Communication Protocols?
 
