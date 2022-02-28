@@ -7,12 +7,14 @@ Shared Repository for Rutgers Bootcamp Final Project
 
 ## Why We Chose This Topic:
 
-After much deliberation and consideration of various datasets, sources, and general topics, we’ve decided to explore Life Expectancy as well as a variety of related factors encompassing health, society, economics, and geography on an international scale. As a team, we’ve been drawn mainly to datasets relating to geography and geopolitics, as such topics are ripe for interesting visualizations of broad and specific international trends. We’ve ultimately decided to explore Life Expectancy and the factors that might influence it as these datasets are relatively manageable and direct while still offering wide potential for feature analysis, visualizations, and unique insights.
+After much deliberation and consideration of various datasets, sources, and general topics, we’ve decided to explore life expectancy as well as a variety of related factors encompassing health, society, economics, and geography on an international scale. As a team, we’ve been drawn mainly to datasets relating to geography and geopolitics, as such topics are ripe for interesting visualizations of broad and specific international trends. We’ve ultimately decided to explore life expectancy and the factors that might influence it as these datasets are relatively manageable and direct while still offering wide potential for feature analysis, visualizations, and unique insights.
 
 ## Data Sources:
 
 Our main dataset, Life Expectancy data from the World Bank, is the baseline for which we are building and expanding our project. Using this dataset to guide us, we have also brought in a wide variety of features from more extensive or specific additional databases, listed in detail in the following document: 
 [Source_References.xlsx](https://github.com/Ryan-Fried/Final_Project-Group1/files/8149293/Source_References.xlsx)
+
+We will also be using this dataset: 
 
 ## What Questions Do We Hope to Answer?
 
@@ -58,7 +60,11 @@ Outline of the workflow we plan to impliment for our project:
 ![ERD_Draft](https://user-images.githubusercontent.com/91569387/155905655-44a11d79-ee0f-46cc-a857-560a903547fc.png)
 ### Machine Learning
 - SciKitLearn - Machine Learning Library
-- Jupyter Notebook - Used to conduct Multiple Linear Regression and other models
+- Multiple Linear Regression - to be used to predict life expectancy
+- RandomForest - used to predict the development status of countries
+- KMeans Clustering - used to cluster countries
+- Jupyter Notebook - will be used to conduct machine learning analysis
 ### Dashboard
-- AWS - Cloud server
 - Tableau - Visualization focused dashboard
+
+### AWS - Cloud server
