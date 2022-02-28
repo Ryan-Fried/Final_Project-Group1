@@ -14,7 +14,8 @@ After much deliberation and consideration of various datasets, sources, and gene
 Our main dataset, Life Expectancy data from the World Bank, is the baseline for which we are building and expanding our project. Using this dataset to guide us, we have also brought in a wide variety of features from more extensive or specific additional databases, listed in detail in the following document: 
 [Source_References.xlsx](https://github.com/Ryan-Fried/Final_Project-Group1/files/8149293/Source_References.xlsx)
 
-We will also be using this dataset: 
+To study the correlation between life expectancy and happiness we will be using this dataset:
+https://www.kaggle.com/unsdsn/world-happiness
 
 ## What Questions Do We Hope to Answer?
 
