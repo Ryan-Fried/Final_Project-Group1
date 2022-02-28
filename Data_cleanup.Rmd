@@ -1,0 +1,139 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(readxl)
+
+```
+
+
+```{r}
+# Transforming and cleaning - Life Expectancy data
+
+le<-read.csv("Resources/Raw/Life_expectancy.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE, skip = 4)
+# Remove unwanted fields
+le<-select(le,-c(Indicator.Name,Indicator.Code,X))
+# Transform
+le<-gather(le,key="Year",value="LE",X1960:X2020)
+# Streamline
+le$Year<-gsub("X","",le$Year)%>%as.numeric(as.character(le$Year))
+names(le)<-c("Country","Code","Year","Life_Expectancy")
+```
+
+
+```{r}
+# Transforming and cleaning - Alcohol - Habits
+Alcohol_consumption<-read.csv("Resources/Raw/Alcohol_consumption.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE, skip = 4)
+# Remove unwanted fields
+Alcohol_consumption<-select(Alcohol_consumption,-c(Indicator.Name,Indicator.Code,X))
+# Transform
+Alcohol_consumption<-gather(Alcohol_consumption,key="Year",value="Alcohol_usage",X1960:X2020)
+# Converting year to proper format
+Alcohol_consumption$Year<-gsub("X","",Alcohol_consumption$Year)%>%as.numeric(as.character(Alcohol_consumption$Year))
+Alcohol_consumption<-subset(Alcohol_consumption,Year>=2000)
+# Fill in missing data
+Alcohol_consumption<-Alcohol_consumption%>%group_by(Country.Name)%>%
+  fill(Alcohol_usage,.direction = "downup")
+#Streamline
+names(Alcohol_consumption)<-c("Country","Code","Year","Total_alcohol_consumption_per_capita")
+```
+
+
+```{r}
+# Transforming and cleaning - Obesity - Habits
+obesity<-read.csv("Resources/Raw/Obesity_prevelance.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE)
+# Remove unwanted fields - Columns for male and female contained "." since they were repeats
+obesity<-select(obesity,-c(which(grepl("\\.",names(obesity)))))
+obesity<-tail(obesity,-3)
+# Transform
+obesity<-gather(obesity,key="Year",value="Obesity",X2016:X1975)
+# Converting year to proper format
+obesity$Year<-gsub("X","",obesity$Year)%>%as.numeric(as.character(obesity$Year))
+# Converting obese people percentage to proper format
+obesity$Obesity<-str_remove(obesity$Obesity,"\\[.*\\]")
+# Extending the data
+obesity<-obesity%>%complete(Year=seq(2017,2019),X)#%>%
+obesity<-obesity%>%group_by(X)%>%fill(Obesity,.direction ="downup")
+# Streamline
+names(obesity)<-c("Year","Country","Percentage_of_Obese_People")
+
+```
+
+
+```{r}
+# Transforming and cleaning - Population - Social
+population<-read.csv("Resources/Raw/Population_UN.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE,skip=1)
+# Remove unwanted data
+population<-select(population,-c(Region.Country.Area,Footnotes,Source))
+# Transform
+population<-spread(population,key="Series",value="Value")
+# Remove unwanted fields
+names(population)<-gsub(" ","_",names(population))
+population<-select(population,c(X,Year,Population_density,`Sex_ratio_(males_per_100_females)`))
+# Streamline
+names(population)[1]<-"Country"
+
+
+```
+
+```{r}
+# Transforming and cleaning - BCG - Immunization
+BCG<-read_excel("Resources/Raw/BCG.xlsx")
+# Remove unwanted data
+BCG<-subset(BCG,COVERAGE_CATEGORY=="WUENIC")
+BCG<-select(BCG,-c(GROUP,ANTIGEN,ANTIGEN_DESCRIPTION,COVERAGE_CATEGORY,COVERAGE_CATEGORY_DESCRIPTION,TARGET_NUMBER,DOSES))
+# Fill up any missing data
+BCG<-BCG%>%group_by(NAME)%>%fill(COVERAGE,.direction="up")
+# Streamline
+names(BCG)<-c("Code","Country","Year","BCG_Coverage")
+```
+
+
+```{r}
+# Transforming and cleaning - Measles - Immunization
+measles<-read_excel("Resources/Raw/Measles vaccination coverage.xlsx")
+# Remove unwanted data
+measles<-subset(measles,COVERAGE_CATEGORY=="WUENIC")
+measles<-select(measles,-c(GROUP,ANTIGEN,ANTIGEN_DESCRIPTION,COVERAGE_CATEGORY,COVERAGE_CATEGORY_DESCRIPTION,TARGET_NUMBER,DOSES))
+# Fill up any missing data
+measles<-measles%>%group_by(NAME)%>%fill(COVERAGE,.direction="up")
+# Streamline
+names(measles)<-c("Code","Country","Year","Measles_vaccination_coverage")
+
+```
+
+
+```{r}
+# Transforming and cleaning - HepB - Immunization
+hepatitis<-read_excel("Resources/Raw/Hepatitis B vaccination coverage.xlsx")
+# Remove unwanted data
+hepatitis<-subset(hepatitis,COVERAGE_CATEGORY=="WUENIC")
+hepatitis<-select(hepatitis,-c(GROUP,ANTIGEN,ANTIGEN_DESCRIPTION,COVERAGE_CATEGORY,COVERAGE_CATEGORY_DESCRIPTION,TARGET_NUMBER,DOSES))
+# Fill up missing data
+hepatitis<-hepatitis%>%group_by(NAME)%>%fill(COVERAGE,.direction="up")
+# Streamline
+names(hepatitis)<-c("Code","Country","Year","Hep-B_vaccination_coverage")
+```
+
+
+```{r}
+# Transforming and cleaning - DTT and DTP - Immunization
+diptheria<-read_excel("Resources/Raw/Diptheria.xlsx")
+# Remove unwanted data
+diptheria<-subset(diptheria,COVERAGE_CATEGORY=="WUENIC")
+diptheria<-select(diptheria,-c(GROUP,ANTIGEN,ANTIGEN_DESCRIPTION,COVERAGE_CATEGORY,COVERAGE_CATEGORY_DESCRIPTION,TARGET_NUMBER,DOSES))
+# Fill up missing data
+diptheria<-diptheria%>%group_by(NAME)%>%fill(COVERAGE,.direction="up")
+# Streamline
+names(diptheria)<-c("Code","Country","Year","DTT_and_DTP_vaccination_coverage")
+```
+
