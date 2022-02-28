@@ -1,6 +1,3 @@
-# Final_Project-Group1
-Shared Repository for Rutgers Bootcamp Final Project
-
 # Deliverable 1: Presentation
  
 ## Topic: Life Expectancy and Happiness Around The World
