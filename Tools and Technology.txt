@@ -1,8 +1,8 @@
 Tools Used for Final project:
 
 PostgreSQL (Database)
-Jupyter Notebook (Conduct Multiple Linear Regression Analysis)
-R (clean and prepare data)
-Python (Coding Language)
-AWS (cloud server)
-
+R (clean and Prepare data)
+Python (Coding Language - Database Connection, ETL, Predictive Analysis)
+Tableau (Visualizations)
+AWS (Cloud Server)
+Jupyter Notebook (ETL and Predictive Analysis)
