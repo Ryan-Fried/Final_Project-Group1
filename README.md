@@ -54,7 +54,8 @@ Outline of the workflow we plan to impliment for our project:
 - R - Cleaning, preparing, and performing statistical analysis on data
 - Python - Used to connect to our database, perform the ETL process, and implement our Machine Learning models
 ### Database Storage
-- PostgreSQL - Database
+- PostgreSQL - Database - This is our ERD layout of how our database will be structured:
+![ERD_Draft](https://user-images.githubusercontent.com/91569387/155905655-44a11d79-ee0f-46cc-a857-560a903547fc.png)
 ### Machine Learning
 - SciKitLearn - Machine Learning Library
 - Jupyter Notebook - Used to conduct Multiple Linear Regression and other models
