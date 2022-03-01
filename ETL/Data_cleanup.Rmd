@@ -12,7 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(dplyr)
 library(readxl)
-
+library(naniar)
+library(imputeTS)
 ```
 
 
@@ -138,6 +139,99 @@ names(diptheria)<-c("Code","Country","Year","DTT_and_DTP_vaccination_coverage")
 ```
 
 ```{r}
-# Ryan Branch Test
+# Transforming and Cleaning - Drinking Water - Socio-Economic
+dw<-read.csv("../Resources/Raw/Drinking_water.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE, skip = 6)
+
+# Remove Unwanted Fields
+dw<-select(dw, -c(HDI.Rank,X))
+dw<-select(dw, -c(which(grepl("\\.",names(dw)))))
+dw<-head(dw,-17)
+
+# Transform
+dw<-gather(dw,key='Year',value='DW',X2000:X2017)
+
+# Streamline
+dw$Year<-gsub("X","",dw$Year)%>%as.numeric(as.character(dw$Year))
+dw$DW<-as.numeric(dw$DW)
+
+# Checking for missing values
+dw%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+
+# Handling missing values
+dw<-dw%>%group_by(Country)%>%filter(!mean(is.na(DW)) >= 0.8)
+dw%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>1)
+dw<-dw%>%complete(Year=seq(2018,2019),Country)
+
+# Filling in missing values
+dw<-dw%>%group_by(Country)%>%mutate(DW = imputeTS::na_interpolation(DW))
+
+# Final cleanup
+dw%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+names(dw)<-c("Year", "Country","Drinking_Water")
+
+```
+
+```{r}
+# Transforming and Cleaning - Sanitation - Socio-Economic
+sanitation<-read.csv("../Resources/Raw/Sanitation_Services.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE, skip = 6)
+
+# Remove Unwanted Fields
+sanitation<-select(sanitation, -c(HDI.Rank,X))
+sanitation<-select(sanitation, -c(which(grepl("\\.",names(sanitation)))))
+sanitation<-head(sanitation,-16)
+
+# Transform
+sanitation<-gather(sanitation,key='Year',value='SANITATION',X2000:X2017)
+
+# Streamline
+sanitation$Year<-gsub("X","",sanitation$Year)%>%as.numeric(as.character(sanitation$Year))
+sanitation$SANITATION<-as.numeric(sanitation$SANITATION)
+
+# Checking for missing values
+sanitation%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+
+# Handling missing values
+sanitation<-sanitation%>%group_by(Country)%>%filter(!mean(is.na(SANITATION)) >= 0.8)
+sanitation%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>1)
+sanitation<-sanitation%>%complete(Year=seq(2018,2019),Country)
+
+# Filling in missing values
+sanitation<-sanitation%>%group_by(Country)%>%mutate(SANITATION = imputeTS::na_interpolation(SANITATION))
+
+# Final cleanup
+sanitation%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+names(sanitation)<-c("Year", "Country","Sanitation")
+```
+
+```{r}
+# Transforming and Cleaning - Human Development Index (HDI) - Development Factors
+hdi<-read.csv('../Resources/Raw/Human Development Index (HDI).csv',check.names=TRUE,header=TRUE,sep=',',stringsAsFactors=FALSE,skip=5)
+
+# Remove Unwanted Fields
+hdi<-select(hdi, -c(HDI.Rank,X))
+hdi<-select(hdi, -c(which(grepl("\\.",names(hdi)))))
+hdi<-head(hdi,-16)
+
+# Transform
+hdi<-gather(hdi,key='Year',value='HDI',X1990:X2019)
+
+# Streamline
+hdi$Year<-gsub("X","",hdi$Year)%>%as.numeric(as.character(hdi$Year))
+hdi$HDI<-as.numeric(hdi$HDI)
+hdi<-hdi%>%filter(Year>=2000)
+
+# Checking for missing values
+hdi%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+
+# Handling missing values
+hdi<-hdi%>%group_by(Country)%>%filter(!mean(is.na(HDI)) >= 0.8)
+hdi%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>1)
+
+# Filling in missing values
+hdi<-hdi%>%group_by(Country)%>%mutate(HDI = imputeTS::na_interpolation(HDI))
+
+# Final cleanup
+hdi%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+names(hdi)<-c("Country","Year","Human_Development_Index")
 ```
 
