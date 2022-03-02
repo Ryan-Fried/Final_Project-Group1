@@ -167,7 +167,7 @@ dw<-dw%>%group_by(Country)%>%mutate(DW = imputeTS::na_interpolation(DW))
 
 # Final cleanup
 dw%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
-names(dw)<-c("Year", "Country","Drinking_Water")
+names(dw)<-c("Year", "Country","DRNW")
 
 ```
 
@@ -200,7 +200,7 @@ sanitation<-sanitation%>%group_by(Country)%>%mutate(SANITATION = imputeTS::na_in
 
 # Final cleanup
 sanitation%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
-names(sanitation)<-c("Year", "Country","Sanitation")
+names(sanitation)<-c("Year", "Country","SAN")
 ```
 
 ```{r}
@@ -232,7 +232,7 @@ hdi<-hdi%>%group_by(Country)%>%mutate(HDI = imputeTS::na_interpolation(HDI))
 
 # Final cleanup
 hdi%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
-names(hdi)<-c("Country","Year","Human_Development_Index")
+names(hdi)<-c("Country","Year","HDI")
 ```
 
 ```{r}
@@ -264,7 +264,7 @@ income<-income%>%group_by(Country)%>%mutate(INCOME = imputeTS::na_interpolation(
 
 # Final cleanup
 income%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
-names(income)<-c("Country","Year","Income")
+names(income)<-c("Country","Year","INCI")
 ```
 
 ```{r}
@@ -296,6 +296,6 @@ edu<-edu%>%group_by(Country)%>%mutate(EDU = imputeTS::na_interpolation(EDU))
 
 # Final cleanup
 edu%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
-names(edu)<-c("Country","Year","Education")
+names(edu)<-c("Country","Year","EDI")
 ```
 
