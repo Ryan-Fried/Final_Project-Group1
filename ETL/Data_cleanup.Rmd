@@ -158,7 +158,7 @@ dw$DW<-as.numeric(dw$DW)
 dw%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
 
 # Handling missing values
-dw<-dw%>%group_by(Country)%>%filter(!mean(is.na(DW)) >= 0.8)
+dw<-dw%>%group_by(Country)%>%filter(!mean(is.na(DW)) >= 0.2)
 dw%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>1)
 dw<-dw%>%complete(Year=seq(2018,2019),Country)
 
@@ -191,7 +191,7 @@ sanitation$SANITATION<-as.numeric(sanitation$SANITATION)
 sanitation%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
 
 # Handling missing values
-sanitation<-sanitation%>%group_by(Country)%>%filter(!mean(is.na(SANITATION)) >= 0.8)
+sanitation<-sanitation%>%group_by(Country)%>%filter(!mean(is.na(SANITATION)) >= 0.2)
 sanitation%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>1)
 sanitation<-sanitation%>%complete(Year=seq(2018,2019),Country)
 
@@ -224,7 +224,7 @@ hdi<-hdi%>%filter(Year>=2000)
 hdi%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
 
 # Handling missing values
-hdi<-hdi%>%group_by(Country)%>%filter(!mean(is.na(HDI)) >= 0.8)
+hdi<-hdi%>%group_by(Country)%>%filter(!mean(is.na(HDI)) >= 0.2)
 hdi%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>1)
 
 # Filling in missing values
@@ -234,6 +234,7 @@ hdi<-hdi%>%group_by(Country)%>%mutate(HDI = imputeTS::na_interpolation(HDI))
 hdi%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
 names(hdi)<-c("Country","Year","Human_Development_Index")
 ```
+
 ```{r}
 # Transforming and Cleaning - Income - Development Factors
 income<-read.csv('../Resources/Raw/Income index.csv',check.names=TRUE,header=TRUE,sep=',',stringsAsFactors=FALSE,skip=5)
@@ -255,7 +256,7 @@ income<-income%>%filter(Year>=2000)
 income%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
 
 # Handling missing values
-income<-income%>%group_by(Country)%>%filter(!mean(is.na(INCOME)) >= 0.8)
+income<-income%>%group_by(Country)%>%filter(!mean(is.na(INCOME)) >= 0.2)
 income%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>1)
 
 # Filling in missing values
@@ -287,7 +288,7 @@ edu<-edu%>%filter(Year>=2000)
 edu%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
 
 # Handling missing values
-edu<-edu%>%group_by(Country)%>%filter(!mean(is.na(EDU)) >= 0.8)
+edu<-edu%>%group_by(Country)%>%filter(!mean(is.na(EDU)) >= 0.2)
 edu%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>1)
 
 # Filling in missing values
