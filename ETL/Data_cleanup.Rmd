@@ -17,6 +17,7 @@ library(imputeTS)
 library(zoo)
 ```
 
+
 ### Life Expectancy
 ```{r}
 # Transforming and cleaning - Life Expectancy data
@@ -45,7 +46,7 @@ le<-le%>%group_by(Country.Name)%>%mutate(LE = imputeTS::na_interpolation(LE))
 
 # Final cleanup
 le%>%group_by(Country.Name)%>%miss_var_summary()%>%filter(n_miss>0)
-names(le)<-c("Country","Code","Year","LE_Code")
+names(le)<-c("Country","Code","Year","LE")
 
 ```
 
@@ -75,7 +76,7 @@ Alcohol_consumption<-Alcohol_consumption%>%filter(Period>=2000)%>%drop_na()
 Alcohol_consumption%>%group_by(Location)%>%miss_var_summary()%>%filter(n_miss>0)
 
 #Streamline
-names(Alcohol_consumption)<-c("Year","Country","Code","ALC_Code")
+names(Alcohol_consumption)<-c("Year","Country","Code","ALC")
 ```
 
 
@@ -107,7 +108,7 @@ obesity%>%group_by(X)%>%miss_var_summary()%>%filter(n_miss>0)
 obesity<-drop_na(obesity)
 
 # Streamline
-names(obesity)<-c("Year","Country","OBP_Code")
+names(obesity)<-c("Year","Country","OBP")
 
 ```
 
@@ -140,7 +141,7 @@ BCG%>%group_by(NAME)%>%miss_var_summary()%>%filter(n_miss>0)
 BCG<-drop_na(BCG)
   
 # Streamline
-names(BCG)<-c("Year","Country","Code","BCG_Code")
+names(BCG)<-c("Year","Country","Code","BCG")
 ```
 
 
@@ -170,7 +171,7 @@ measles%>%group_by(NAME)%>%miss_var_summary()%>%filter(n_miss>0)
 measles<-drop_na(measles)
 
 # Streamline
-names(measles)<-c("Year","Country","Code","MCV_Code")
+names(measles)<-c("Year","Country","Code","MCV")
 
 ```
 
@@ -183,7 +184,7 @@ hepatitis_set2<-read.csv("../Resources/Raw/Life Expectancy Data.csv",check.names
 # Remove unwanted data
 hepatitis_set1<-hepatitis_set1%>%subset(COVERAGE_CATEGORY=="WUENIC"&nchar(CODE)>2&nchar(CODE)<8)%>%filter(YEAR<=2019)
 hepatitis_set1<-select(hepatitis_set1,-c(GROUP,ANTIGEN,ANTIGEN_DESCRIPTION,COVERAGE_CATEGORY,COVERAGE_CATEGORY_DESCRIPTION,TARGET_NUMBER,DOSES))
-names(hepatitis_set1)<-c("Code","Country","Year","HEPB")
+names(hepatitis_set1)<-c("Code","Country","Year","HEPB_Code")
 
 hepatitis_set2<-select(hepatitis_set2,c(Country,Year,Hepatitis.B))
 
@@ -195,8 +196,8 @@ hepatitis_set1<-hepatitis_set1%>%complete(Year=seq(2000,2019),Country)
 # Merge the two dataframes
 hepatitis<-merge(hepatitis_set1,hepatitis_set2,by=c("Country","Year"),all=TRUE)
 
-hepatitis$HEPB_Code<- ifelse(is.na(hepatitis$HEPB),hepatitis$Hepatitis.B,                 ifelse(is.na(hepatitis$Hepatitis.B),hepatitis$HEPB,                       ifelse(abs((hepatitis$HEPB-hepatitis$Hepatitis.B)/(hepatitis$HEPB+hepatitis$Hepatitis.B))/2<0.2,(hepatitis$HEPB+hepatitis$Hepatitis.B)/2,hepatitis$HEPB)))                         
-hepatitis<-select(hepatitis,-c(HEPB,Hepatitis.B))                         
+hepatitis$HEPB<- ifelse(is.na(hepatitis$HEPB_Code),hepatitis$Hepatitis.B,                 ifelse(is.na(hepatitis$Hepatitis.B),hepatitis$HEPB_Code,                       ifelse(abs((hepatitis$HEPB_Code-hepatitis$Hepatitis.B)/(hepatitis$HEPB_CodeB+hepatitis$Hepatitis.B))/2<0.2,(hepatitis$HEPB_Code+hepatitis$Hepatitis.B)/2,hepatitis$HEPB_Code)))                         
+hepatitis<-select(hepatitis,-c(HEPB_Code,Hepatitis.B))                         
 
 #Formatting
 hepatitis$CODE<-toupper(hepatitis$CODE)
@@ -207,10 +208,10 @@ hepatitis%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
 # Handling missing data
 
 #Remove data with 80% missing data
-hepatitis<-hepatitis%>%group_by(Country)%>%filter(!mean(is.na(HEPB_Code)) >= 0.2)
+hepatitis<-hepatitis%>%group_by(Country)%>%filter(!mean(is.na(HEPB)) >= 0.2)
 hepatitis%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
 #Interpolate values to fill gaps
-hepatitis<-hepatitis%>%group_by(Country)%>%mutate(HEPB_Code = imputeTS::na_interpolation(HEPB_Code))
+hepatitis<-hepatitis%>%group_by(Country)%>%mutate(HEPB = imputeTS::na_interpolation(HEPB))
 #Fill in Code values for missing rows
 hepatitis<-hepatitis%>%group_by(Country)%>%fill(Code,.direction ="downup")
 
@@ -248,7 +249,7 @@ diptheria%>%group_by(NAME)%>%miss_var_summary()%>%filter(n_miss>0)
 diptheria<-drop_na(diptheria)
 
 # Streamline
-names(diptheria)<-c("Year","Country","Code","DTP_Code")
+names(diptheria)<-c("Year","Country","Code","DTP")
 ```
 
 ### Economic
@@ -278,7 +279,7 @@ gdp<-gdp%>%group_by(Country.Name)%>%mutate(GDP = imputeTS::na_interpolation(GDP)
 
 # Final cleanup
 gdp%>%group_by(Country.Name)%>%miss_var_summary()%>%filter(n_miss>0)
-names(gdp)<-c("Country","Code","Year","GDP_Code")
+names(gdp)<-c("Country","Code","Year","GDP")
 ```
 
 
@@ -308,7 +309,7 @@ gdp_growth<-gdp_growth%>%group_by(Country.Name)%>%mutate(GDP_Growth = imputeTS::
 
 # Final cleanup
 gdp_growth%>%group_by(Country.Name)%>%miss_var_summary()%>%filter(n_miss>0)
-names(gdp_growth)<-c("Country","Code","Year","GDPG_Code")
+names(gdp_growth)<-c("Country","Code","Year","GDPG")
 ```
 
 
@@ -336,7 +337,7 @@ he%>%group_by(Countries)%>%miss_var_summary()%>%filter(n_miss>0)
 he<-he%>%group_by(Countries)%>%mutate(HE_Code = imputeTS::na_interpolation(HE_Code))
 
 # Streamline
-names(he)<-c("Country","Year","HE_Code")
+names(he)<-c("Country","Year","HE")
 ```
 
 ### Socio-Economic
@@ -367,7 +368,7 @@ sr%>%group_by(Location)%>%miss_var_summary()%>%filter(n_miss>0)
 sr<-sr%>%complete(Year=seq(min(Year),max(Year)),Location)%>%group_by(Location)%>%fill(SR_Code,.direction="down")
 
 # Streamline
-names(sr)<-c("Country","Year","SR_Code")
+names(sr)<-c("Country","Year","SR")
 ```
 
 ### Health
@@ -376,7 +377,7 @@ names(sr)<-c("Country","Year","SR_Code")
 cancer<-read.csv("../Resources/Raw/Cancer.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
 # Streamline
-names(cancer)<-c("Country","Code","Year","CANP_Code")
+names(cancer)<-c("Country","Code","Year","CANP")
 
 # Subsetting data
 cancer<-subset(cancer,Year>=2000)
@@ -384,7 +385,7 @@ cancer<-subset(cancer,Year>=2000)
 # Handling missing values
 cancer%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
 cancer%>%group_by(Year)%>%count()
-cancer<-cancer%>%complete(Year=seq(2000,2019),Country)%>%group_by(Country)%>%fill(c(Code,CANP_Code),.direction="down") #Extending to 2019
+cancer<-cancer%>%complete(Year=seq(2000,2019),Country)%>%group_by(Country)%>%fill(c(Code,CANP),.direction="down") #Extending to 2019
 cancer%>%group_by(Year)%>%count()
 
 ```
@@ -397,13 +398,13 @@ diabetes<-read.csv("../Resources/Raw/Diabetes.csv",check.names=TRUE,header = TRU
 # Streamline
 diabetes<-select(diabetes,-c(Lower.95..uncertainty.interval,  
 Upper.95..uncertainty.interval))
-names(diabetes)<-c("Country","Code","Sex","Year","DB_Code")
+names(diabetes)<-c("Country","Code","Sex","Year","DB")
 
 # Transform
-diabetes<-spread(diabetes,key="Sex",value="DB_Code")
+diabetes<-spread(diabetes,key="Sex",value="DB")
 
 # Average
-diabetes$DB_Code<-(diabetes$Men+diabetes$Women)/2
+diabetes$DB<-(diabetes$Men+diabetes$Women)/2
 
 # Removing unwanted data
 diabetes<-diabetes%>%subset(Year>=2000)%>%select(-c(Men,Women))
