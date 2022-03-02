@@ -994,3 +994,11 @@ Hap_df <-rbind(Hap1_df, Hap2_df, Hap3_df, Hap4_df, Hap5_df)
 Hap_df%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
 
 ```
+```{r}
+# Clean and modify Status
+Status<-read.csv("../Resources/Raw/Life Expectancy Data.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE)
+Status<-subset(Status,Year==2015) 
+Status<-select(Status,c(Country,Year,Status))
+
+```
+
