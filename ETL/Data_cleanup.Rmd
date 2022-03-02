@@ -576,4 +576,421 @@ edu<-edu%>%group_by(Country)%>%mutate(EDU = imputeTS::na_interpolation(EDU))
 edu%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
 names(edu)<-c("Country","Year","EDI")
 ```
+```{r}
+# Transforming and cleaning - Life Expectancy data
 
+le<-read.csv("Resources/Raw/Life_expectancy.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE, skip = 4)
+# Remove unwanted fields
+le<-select(le,-c(Indicator.Name,Indicator.Code,X))
+# Transform
+le<-gather(le,key="Year",value="LE",X1960:X2020)
+# Streamline
+le$Year<-gsub("X","",le$Year)%>%as.numeric(as.character(le$Year))
+names(le)<-c("Country","Code","Year","Life_Expectancy")
+```
+
+
+```{r}
+# Transforming and cleaning - Alcohol - Habits
+Alcohol_consumption<-read.csv("Resources/Raw/Alcohol_consumption.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE, skip = 4)
+# Remove unwanted fields
+Alcohol_consumption<-select(Alcohol_consumption,-c(Indicator.Name,Indicator.Code,X))
+# Transform
+Alcohol_consumption<-gather(Alcohol_consumption,key="Year",value="Alcohol_usage",X1960:X2020)
+# Converting year to proper format
+Alcohol_consumption$Year<-gsub("X","",Alcohol_consumption$Year)%>%as.numeric(as.character(Alcohol_consumption$Year))
+Alcohol_consumption<-subset(Alcohol_consumption,Year>=2000)
+# Fill in missing data
+Alcohol_consumption<-Alcohol_consumption%>%group_by(Country.Name)%>%
+  fill(Alcohol_usage,.direction = "downup")
+#Streamline
+names(Alcohol_consumption)<-c("Country","Code","Year","Total_alcohol_consumption_per_capita")
+```
+
+
+```{r}
+# Transforming and cleaning - Obesity - Habits
+obesity<-read.csv("Resources/Raw/Obesity_prevelance.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE)
+# Remove unwanted fields - Columns for male and female contained "." since they were repeats
+obesity<-select(obesity,-c(which(grepl("\\.",names(obesity)))))
+obesity<-tail(obesity,-3)
+# Transform
+obesity<-gather(obesity,key="Year",value="Obesity",X2016:X1975)
+# Converting year to proper format
+obesity$Year<-gsub("X","",obesity$Year)%>%as.numeric(as.character(obesity$Year))
+# Converting obese people percentage to proper format
+obesity$Obesity<-str_remove(obesity$Obesity,"\\[.*\\]")
+# Extending the data
+obesity<-obesity%>%complete(Year=seq(2017,2019),X)#%>%
+obesity<-obesity%>%group_by(X)%>%fill(Obesity,.direction ="downup")
+# Streamline
+names(obesity)<-c("Year","Country","Percentage_of_Obese_People")
+
+```
+
+
+```{r}
+# Transforming and cleaning - Population - Social
+population<-read.csv("Resources/Raw/Population_UN.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE,skip=1)
+# Remove unwanted data
+population<-select(population,-c(Region.Country.Area,Footnotes,Source))
+# Transform
+population<-spread(population,key="Series",value="Value")
+# Remove unwanted fields
+names(population)<-gsub(" ","_",names(population))
+population<-select(population,c(X,Year,Population_density,`Sex_ratio_(males_per_100_females)`))
+# Streamline
+names(population)[1]<-"Country"
+
+
+```
+
+```{r}
+# Transforming and cleaning - BCG - Immunization
+BCG<-read_excel("Resources/Raw/BCG.xlsx")
+# Remove unwanted data
+BCG<-subset(BCG,COVERAGE_CATEGORY=="WUENIC")
+BCG<-select(BCG,-c(GROUP,ANTIGEN,ANTIGEN_DESCRIPTION,COVERAGE_CATEGORY,COVERAGE_CATEGORY_DESCRIPTION,TARGET_NUMBER,DOSES))
+# Fill up any missing data
+BCG<-BCG%>%group_by(NAME)%>%fill(COVERAGE,.direction="up")
+# Streamline
+names(BCG)<-c("Code","Country","Year","BCG_Coverage")
+```
+
+
+```{r}
+# Transforming and cleaning - Measles - Immunization
+measles<-read_excel("Resources/Raw/Measles vaccination coverage.xlsx")
+# Remove unwanted data
+measles<-subset(measles,COVERAGE_CATEGORY=="WUENIC")
+measles<-select(measles,-c(GROUP,ANTIGEN,ANTIGEN_DESCRIPTION,COVERAGE_CATEGORY,COVERAGE_CATEGORY_DESCRIPTION,TARGET_NUMBER,DOSES))
+# Fill up any missing data
+measles<-measles%>%group_by(NAME)%>%fill(COVERAGE,.direction="up")
+# Streamline
+names(measles)<-c("Code","Country","Year","Measles_vaccination_coverage")
+
+```
+
+
+```{r}
+# Transforming and cleaning - HepB - Immunization
+hepatitis<-read_excel("Resources/Raw/Hepatitis B vaccination coverage.xlsx")
+# Remove unwanted data
+hepatitis<-subset(hepatitis,COVERAGE_CATEGORY=="WUENIC")
+hepatitis<-select(hepatitis,-c(GROUP,ANTIGEN,ANTIGEN_DESCRIPTION,COVERAGE_CATEGORY,COVERAGE_CATEGORY_DESCRIPTION,TARGET_NUMBER,DOSES))
+# Fill up missing data
+hepatitis<-hepatitis%>%group_by(NAME)%>%fill(COVERAGE,.direction="up")
+# Streamline
+names(hepatitis)<-c("Code","Country","Year","Hep-B_vaccination_coverage")
+```
+
+
+```{r}
+# Transforming and cleaning - DTT and DTP - Immunization
+diptheria<-read_excel("Resources/Raw/Diptheria.xlsx")
+# Remove unwanted data
+diptheria<-subset(diptheria,COVERAGE_CATEGORY=="WUENIC")
+diptheria<-select(diptheria,-c(GROUP,ANTIGEN,ANTIGEN_DESCRIPTION,COVERAGE_CATEGORY,COVERAGE_CATEGORY_DESCRIPTION,TARGET_NUMBER,DOSES))
+# Fill up missing data
+diptheria<-diptheria%>%group_by(NAME)%>%fill(COVERAGE,.direction="up")
+# Streamline
+names(diptheria)<-c("Code","Country","Year","DTT_and_DTP_vaccination_coverage")
+```
+
+
+### Mortality Rate
+```{r}
+# Transforming and cleaning - Mortality Rate -Infant
+
+Mortality_Infant<-read.csv("Resources/Raw/Mortality Rate_Infant.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE, skip = 4)
+
+# Remove unwanted fields
+Mortality_Infant<-select(Mortality_Infant,-c(Indicator.Name,Indicator.Code,X))
+
+# Transform year column to rows
+Mortality_Infant<-gather(Mortality_Infant,key="Year",value="INFMR",X1960:X2020)
+
+#Select only required fields
+Mortality_Infant<-select(Mortality_Infant,c(Country.Name,Country.Code, Year, INFMR))
+ 
+# Replace X character in year with space and converted to numeric data type
+Mortality_Infant$Year<-gsub("X","",Mortality_Infant$Year)%>%as.numeric(as.character(Mortality_Infant$Year))
+
+#Select data for year > 2000
+Mortality_Infant<-subset(Mortality_Infant,Year>=2000)
+
+#Customized column names
+names(Mortality_Infant)<-c("Country","Code","Year","INFMR")
+
+#Check for missing values
+Mortality_Infant%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+
+# Handling missing values
+Mortality_Infant<-Mortality_Infant%>%group_by(Country)%>%filter(!mean(is.na(INFMR)) >= 0.2)
+
+Mortality_Infant%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+ 
+# Filling in missing values
+# There was no data for missing values and so no interpolation was done.
+
+```
+
+```{r}
+# Transforming and cleaning - Adult Mortality Rate -Female
+
+Mortality_Female<-read.csv("Resources/Raw/Mortality_rate_female.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE, skip = 4)
+
+# Remove unwanted fields
+Mortality_Female<-select(Mortality_Female,-c(Indicator.Name,Indicator.Code,X))
+
+# Transform year column to rows
+Mortality_Female<-gather(Mortality_Female,key="Year",value="AMRF",X1960:X2020)
+
+#Select only required fields
+Mortality_Female<-select(Mortality_Female,c(Country.Name,Country.Code, Year, AMRF))
+ 
+# Replace X character in year with space and converted to numeric data type
+Mortality_Female$Year<-gsub("X","",Mortality_Female$Year)%>%as.numeric(as.character(Mortality_Female$Year))
+
+#Select data for year > 2000
+Mortality_Female<-subset(Mortality_Female,Year>=2000)
+
+#Customized column names
+names(Mortality_Female)<-c("Country","Code","Year","AMRF")
+
+#Check for missing values
+Mortality_Female<-subset(Mortality_Female,Year<=2019)
+Mortality_Female%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+
+# Handling missing values
+Mortality_Female<-Mortality_Female%>%group_by(Country)%>%filter(!mean(is.na(AMRF)) >= 0.2)
+
+Mortality_Female%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+ 
+# Filling in missing values
+Mortality_Female<-Mortality_Female%>%group_by(Country)%>%mutate(value = imputeTS::na_interpolation(AMRF))
+
+# Final cleanup
+Mortality_Female<-select(Mortality_Female,-c(AMRF))
+
+Mortality_Female%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+
+names(Mortality_Female)<-c("Country","Code","Year","AMRF")
+
+```
+```{r}
+# Transforming and cleaning - Adult Mortality Rate -Male
+
+Mortality_Male<-read.csv("Resources/Raw/Mortality_rate_male.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE, skip = 4)
+
+# Remove unwanted fields
+Mortality_Male<-select(Mortality_Male,-c(Indicator.Name,Indicator.Code,X))
+
+# Transform year column to rows
+Mortality_Male<-gather(Mortality_Male,key="Year",value="AMRM",X1960:X2020)
+
+#Select only required fields
+Mortality_Male<-select(Mortality_Male,c(Country.Name,Country.Code, Year, AMRM))
+ 
+# Replace X character in year with space and converted to numeric data type
+Mortality_Male$Year<-gsub("X","",Mortality_Male$Year)%>%as.numeric(as.character(Mortality_Male$Year))
+
+#Select data for year > 2000
+Mortality_Male<-subset(Mortality_Male,Year>=2000)
+
+#Customized column names
+names(Mortality_Male)<-c("Country","Code","Year","AMRM")
+
+#Check for missing values
+Mortality_Male<-subset(Mortality_Male,Year<=2019)
+Mortality_Male%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+
+# Handling missing values
+Mortality_Male<-Mortality_Male%>%group_by(Country)%>%filter(!mean(is.na(AMRM)) >= 0.2)
+
+Mortality_Male%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+ 
+# Filling in missing values
+Mortality_Male<-Mortality_Male%>%group_by(Country)%>%mutate(value = imputeTS::na_interpolation(AMRM))
+
+# Final cleanup
+Mortality_Male<-select(Mortality_Male,-c(AMRM))
+
+Mortality_Male%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+
+names(Mortality_Male)<-c("Country","Code","Year","AMRM")
+
+```
+```{r}
+#Merged Femal and Male Mortality values
+Adult_Mortality = merge(x=Mortality_Female,y=Mortality_Male,by="Country", all=TRUE)
+
+Adult_Mortality<-select(Adult_Mortality,c(Country,Code.x, Year.x, AMRF, AMRM))
+
+#Taking average of adult mortality Male and Female values
+clnames <- c("AMRF","AMRM")
+Adult_Mortality$AMR  <- rowMeans( Adult_Mortality[clnames] )
+
+Adult_Mortality<-select(Adult_Mortality,c(Country,Code.x, Year.x, AMR))
+
+names(Adult_Mortality)<-c("Country","Code","Year","AMR")
+
+```
+
+### Population Density
+```{r}
+# Transforming and cleaning - Population Density
+options(scipen = 999)
+
+PD<-read.csv("Resources/Raw/Population_Density.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE, skip = 4)
+
+# Remove unwanted fields
+PD<-select(PD,-c(Indicator.Name,Indicator.Code,X))
+
+# Transform year column to rows
+PD<-gather(PD,key="Year",value="POPD",X1960:X2020)
+
+#Select only required fields
+PD<-select(PD,c(Country.Name,Country.Code, Year, POPD))
+ 
+# Replace X character in year with space and converted to numeric data type
+PD$Year<-gsub("X","",PD$Year)%>%as.numeric(as.character(PD$Year))
+
+#Select data for year > 2000
+PD<-subset(PD,Year>=2000)
+
+#Customized column names
+names(PD)<-c("Country","Code","Year","POPD")
+
+#Check for missing values
+PD%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+
+# Handling missing values
+PD<-PD%>%group_by(Country)%>%filter(!mean(is.na(POPD)) >= 0.2)
+
+PD%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+ 
+# Filling in missing values
+PD<-PD%>%group_by(Country)%>%mutate(value = imputeTS::na_interpolation(POPD))
+
+# Final cleanup
+PD<-select(PD,-c(POPD))
+
+PD%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+
+names(PD)<-c("Country","Code","Year","POPD")
+
+```
+
+### Population Growth
+```{r}
+# Transforming and cleaning - Population Growth
+
+PG<-read.csv("Resources/Raw/Population_Growth.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE, skip = 4)
+
+# Remove unwanted fields
+PG<-select(PG,-c(Indicator.Name,Indicator.Code,X))
+
+# Transform year column to rows
+PG<-gather(PG,key="Year",value="POPG",X1960:X2020)
+
+#Select only required fields
+PG<-select(PG,c(Country.Name,Country.Code, Year, POPG))
+ 
+# Replace X character in year with space and converted to numeric data type
+PG$Year<-gsub("X","",PG$Year)%>%as.numeric(as.character(PG$Year))
+
+#Select data for year > 2000
+PG<-subset(PG,Year>=2000)
+
+#Customized column names
+names(PG)<-c("Country","Code","Year","POPG")
+
+#Check for missing values
+PG%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+
+# Handling missing values
+PG<-PG%>%group_by(Country)%>%filter(!mean(is.na(POPG)) >= 0.2)
+
+PG%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+ 
+# Filling in missing values
+PG<-PG%>%group_by(Country)%>%mutate(value = imputeTS::na_interpolation(POPG))
+
+# Final cleanup
+PG<-select(PG,-c(POPG))
+
+PG%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+
+names(PG)<-c("Country","Code","Year","POPG")
+```
+
+
+### Happiness Score
+```{r}
+# Transforming and cleaning - Happiness World Excel data
+#Code block for extracting happiness score for 2015
+ 
+Hap1_df<-read.csv("Resources/Raw/2015.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE)
+
+Hap1_df$Year <- 2015 
+
+Hap1_df<-select(Hap1_df,c(Country, Year, Happiness.Score))
+
+names(Hap1_df)<-c("Country","Year", "HAPS")
+
+
+#Code block for extracting happiness score for 2016
+
+Hap2_df<-read.csv("Resources/Raw/2016.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE)
+
+
+Hap2_df$Year <- 2016 
+
+
+Hap2_df<-select(Hap2_df,c(Country, Year, Happiness.Score))
+
+names(Hap2_df)<-c("Country","Year", "HAPS")
+
+#Code block for extracting happiness score for 2017
+
+Hap3_df<-read.csv("Resources/Raw/2017.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE)
+
+Hap3_df$Year <- 2017 
+
+Hap3_df<-select(Hap3_df,c(Country, Year, Happiness.Score))
+
+names(Hap3_df)<-c("Country","Year", "HAPS")
+
+#Code block for extracting happiness score for 2018
+
+Hap4_df<-read.csv("Resources/Raw/2018.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE)
+
+
+Hap4_df$Year <- 2018
+
+Hap4_df<-select(Hap4_df,c(Country.or.region, Year, Score))
+ 
+
+names(Hap4_df)<-c("Country","Year", "HAPS")
+
+#Code block for extracting happiness score for 2019
+
+Hap5_df<-read.csv("Resources/Raw/2019.csv",check.names=TRUE,header = TRUE, sep = ",", stringsAsFactors = FALSE)
+
+Hap5_df$Year <- 2019
+
+Hap5_df<-select(Hap5_df,c(Country.or.region, Year, Score))
+
+
+names(Hap5_df)<-c("Country","Year", "HAPS")
+
+
+#To combine data vertically for all Happiness data sets for years 2015, 2016, 2017, 2018 and 2019
+
+Hap_df <-rbind(Hap1_df, Hap2_df, Hap3_df, Hap4_df, Hap5_df)
+
+#Check for missing values
+Hap_df%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+
+```
