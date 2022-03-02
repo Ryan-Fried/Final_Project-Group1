@@ -200,7 +200,7 @@ hepatitis$HEPB<- ifelse(is.na(hepatitis$HEPB_Code),hepatitis$Hepatitis.B,       
 hepatitis<-select(hepatitis,-c(HEPB_Code,Hepatitis.B))                         
 
 #Formatting
-hepatitis$CODE<-toupper(hepatitis$CODE)
+hepatitis$Code<-toupper(hepatitis$Code)
 
 # Checking missing data
 hepatitis%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
