@@ -928,7 +928,7 @@ HD<-Reduce(function(...) merge(..., by=c("Code","Year"),all=TRUE), list(HD_WB,HD
 
 # Transform to long format
 human_development<-gather(HD,key="ind_id",value="ind_value",na.rm=TRUE,LE:HE)
-names(human_development)<-c("ctry_id","year","ind_id","ind_value")
+names(human_development)<-c("ctry_cd","year","ind_id","ind_value")
 ```
 
 
@@ -946,7 +946,8 @@ Alcohol_consumption_m<-Alcohol_consumption_m%>%ungroup()%>%select(-c(Country))
 
 # Transform to long format
 substance_abuse<-gather(Alcohol_consumption_m,key="ind_id",value="ind_value",na.rm=TRUE,ALC)
-names(substance_abuse)<-c("year","ctry_id","ind_id","ind_value")
+names(substance_abuse)<-c("year","ctry_cd","ind_id","ind_value")
+substance_abuse<-substance_abuse[,c("ctry_cd","year","ind_id","ind_value")]
 ```
 
 
@@ -997,7 +998,7 @@ SD<-Reduce(function(...) merge(..., by=c("Code","Year"),all=TRUE), list(SD_WB,SD
 
 # Transform to long format
 social_determinants<-gather(SD,key="ind_id",value="ind_value",na.rm=TRUE,POPD:HAPS)
-names(social_determinants)<-c("ctry_id","year","ind_id","ind_value")
+names(social_determinants)<-c("ctry_cd","year","ind_id","ind_value")
 ```
 
 
@@ -1015,7 +1016,8 @@ vaccination<-select(vaccination,-c(Country))
 
 # Transform to long format
 infect_ctrl_prevent<-gather(vaccination,key="ind_id",value="ind_value",na.rm=TRUE,BCG:DTP)
-names(infect_ctrl_prevent)<-c("year","ctry_id","ind_id","ind_value")
+names(infect_ctrl_prevent)<-c("year","ctry_cd","ind_id","ind_value")
+infect_ctrl_prevent<-infect_ctrl_prevent[,c("ctry_cd","year","ind_id","ind_value")]
 ```
 
 
@@ -1060,7 +1062,8 @@ disease_int<-Reduce(function(...) merge(...,by=c("Year","Code"),all=TRUE), list(
 
 # Transform to long format
 disease<-gather(disease_int,key="ind_id",value="ind_value",na.rm=TRUE,CANP:OBP)
-names(disease)<-c("year","ctry_id","ind_id","ind_value")
+names(disease)<-c("year","ctry_cd","ind_id","ind_value")
+disease<-disease[,c("ctry_cd","year","ind_id","ind_value")]
 ```
 
 
@@ -1098,5 +1101,75 @@ names(country)<-c("ctry_cd","ctry_desc","status")
 
 ### Publishing to database
 ```{r Database connection}
+con<-dbConnect(RPostgres::Postgres(),
+      host     = "aws-database.csfizhoftmnn.us-east-1.rds.amazonaws.com",
+      dbname   = "Final_Project",
+      user     = rstudioapi::askForPassword("Database user"),
+      password = rstudioapi::askForPassword("Database password"),
+      port     = 5432)
+```
+
+
+```{r Publishing to Database}
+dbWriteTable(con,"human_development",human_development,overwrite=TRUE)
+dbWriteTable(con,"substance_abuse",substance_abuse,overwrite=TRUE)
+dbWriteTable(con,"social_determinants",social_determinants,overwrite=TRUE)
+dbWriteTable(con,"infect_ctrl_prevent",infect_ctrl_prevent,overwrite=TRUE)
+dbWriteTable(con,"disease",disease,overwrite=TRUE)
+dbWriteTable(con,"country",country,overwrite=TRUE)
 
 ```
+
+
+```{r Getting data from database}
+data<-dbGetQuery(con,'SELECT c.ctry_cd AS Country_Code,
+                  	   c.ctry_desc AS Country,
+                  	   c.status AS Status,
+                  	   i.year AS Year,
+                  	   i.ind_id AS Indicator,
+                  	   i.ind_value AS Value	
+                  FROM country AS c
+                  INNER JOIN infect_ctrl_prevent AS i
+                  ON i.ctry_cd= c.ctry_cd
+                  UNION
+                  SELECT c.ctry_cd AS Country_Code,
+                  	   c.ctry_desc AS Country,
+                  	   c.status AS Status,
+                  	   d.year AS Year,
+                  	   d.ind_id AS Indicator,
+                  	   d.ind_value AS Value	 
+                  FROM country AS c
+                  INNER JOIN disease AS d
+                  ON d.ctry_cd= c.ctry_cd
+                  UNION
+                  SELECT c.ctry_cd AS Country_Code,
+                  	   c.ctry_desc AS Country,
+                  	   c.status AS Status,
+                  	   h.year AS Year,
+                  	   h.ind_id AS Indicator,
+                  	   h.ind_value AS Value	 
+                  FROM country AS c
+                  INNER JOIN human_development AS h
+                  ON h.ctry_cd= c.ctry_cd
+                  UNION
+                  SELECT c.ctry_cd AS Country_Code,
+                  	   c.ctry_desc AS Country,
+                  	   c.status AS Status,
+                  	   s.year AS Year,
+                  	   s.ind_id AS Indicator,
+                  	   s.ind_value AS Value	
+                  FROM country AS c
+                  INNER JOIN substance_abuse AS s
+                  ON s.ctry_cd= c.ctry_cd
+                  UNION
+                  SELECT c.ctry_cd AS Country_Code,
+                  	   c.ctry_desc AS Country,
+                  	   c.status AS Status,
+                  	   sd.year AS Year,
+                  	   sd.ind_id AS Indicator,
+                  	   sd.ind_value AS Value	 
+                  FROM country AS c
+                  INNER JOIN social_determinants AS sd
+                  ON sd.ctry_cd= c.ctry_cd')
+```
+
