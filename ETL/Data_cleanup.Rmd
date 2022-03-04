@@ -927,8 +927,8 @@ he_m<-he_m%>%ungroup()%>%select(-c(Country))
 HD<-Reduce(function(...) merge(..., by=c("Code","Year"),all=TRUE), list(HD_WB,HD_UN,he_m))
 
 # Transform to long format
-human_development<-gather(HD,key="ind_id",value="ind_value",na.rm=TRUE,LE:HE)
-names(human_development)<-c("ctry_cd","year","ind_id","ind_value")
+human_development<-gather(HD,key="ind_cd",value="ind_value",na.rm=TRUE,LE:HE)
+names(human_development)<-c("ctry_cd","year","ind_cd","ind_value")
 ```
 
 
@@ -946,8 +946,8 @@ Alcohol_consumption_m<-Alcohol_consumption_m%>%ungroup()%>%select(-c(Country))
 
 # Transform to long format
 substance_abuse<-gather(Alcohol_consumption_m,key="ind_id",value="ind_value",na.rm=TRUE,ALC)
-names(substance_abuse)<-c("year","ctry_cd","ind_id","ind_value")
-substance_abuse<-substance_abuse[,c("ctry_cd","year","ind_id","ind_value")]
+names(substance_abuse)<-c("year","ctry_cd","ind_cd","ind_value")
+substance_abuse<-substance_abuse[,c("ctry_cd","year","ind_cd","ind_value")]
 ```
 
 
@@ -997,8 +997,8 @@ Hap_df_m<-Hap_df_m%>%drop_na(Code)%>%ungroup()%>%select(-c(Country))
 SD<-Reduce(function(...) merge(..., by=c("Code","Year"),all=TRUE), list(SD_WB,SD_UN,sr_m,Hap_df_m))
 
 # Transform to long format
-social_determinants<-gather(SD,key="ind_id",value="ind_value",na.rm=TRUE,POPD:HAPS)
-names(social_determinants)<-c("ctry_cd","year","ind_id","ind_value")
+social_determinants<-gather(SD,key="ind_cd",value="ind_value",na.rm=TRUE,POPD:HAPS)
+names(social_determinants)<-c("ctry_cd","year","ind_cd","ind_value")
 ```
 
 
@@ -1016,8 +1016,8 @@ vaccination<-select(vaccination,-c(Country))
 
 # Transform to long format
 infect_ctrl_prevent<-gather(vaccination,key="ind_id",value="ind_value",na.rm=TRUE,BCG:DTP)
-names(infect_ctrl_prevent)<-c("year","ctry_cd","ind_id","ind_value")
-infect_ctrl_prevent<-infect_ctrl_prevent[,c("ctry_cd","year","ind_id","ind_value")]
+names(infect_ctrl_prevent)<-c("year","ctry_cd","ind_cd","ind_value")
+infect_ctrl_prevent<-infect_ctrl_prevent[,c("ctry_cd","year","ind_cd","ind_value")]
 ```
 
 
@@ -1062,8 +1062,8 @@ disease_int<-Reduce(function(...) merge(...,by=c("Year","Code"),all=TRUE), list(
 
 # Transform to long format
 disease<-gather(disease_int,key="ind_id",value="ind_value",na.rm=TRUE,CANP:OBP)
-names(disease)<-c("year","ctry_cd","ind_id","ind_value")
-disease<-disease[,c("ctry_cd","year","ind_id","ind_value")]
+names(disease)<-c("year","ctry_cd","ind_cd","ind_value")
+disease<-disease[,c("ctry_cd","year","ind_cd","ind_value")]
 ```
 
 
@@ -1111,65 +1111,29 @@ con<-dbConnect(RPostgres::Postgres(),
 
 
 ```{r Publishing to Database}
-dbWriteTable(con,"human_development",human_development,overwrite=TRUE)
-dbWriteTable(con,"substance_abuse",substance_abuse,overwrite=TRUE)
-dbWriteTable(con,"social_determinants",social_determinants,overwrite=TRUE)
-dbWriteTable(con,"infect_ctrl_prevent",infect_ctrl_prevent,overwrite=TRUE)
-dbWriteTable(con,"disease",disease,overwrite=TRUE)
-dbWriteTable(con,"country",country,overwrite=TRUE)
+res<-dbSendQuery(con,'DELETE FROM human_development')
+dbClearResult(res)
+dbWriteTable(con,"human_development",human_development,append=TRUE,overwrite=FALSE)
+res<-dbSendQuery(con,'DELETE FROM substance_abuse')
+dbClearResult(res)
+dbWriteTable(con,"substance_abuse",substance_abuse,append=TRUE,overwrite=FALSE)
+res<-dbSendQuery(con,'DELETE FROM social_determinants')
+dbClearResult(res)
+dbWriteTable(con,"social_determinants",social_determinants,append=TRUE,overwrite=FALSE)
+res<-dbSendQuery(con,'DELETE FROM infect_ctrl_prevent')
+dbClearResult(res)
+dbWriteTable(con,"infect_ctrl_prevent",infect_ctrl_prevent,append=TRUE,overwrite=FALSE)
+res<-dbSendQuery(con,'DELETE FROM disease')
+dbClearResult(res)
+dbWriteTable(con,"disease",disease,append=TRUE,overwrite=FALSE)
+res<-dbSendQuery(con,'DELETE FROM country')
+dbClearResult(res)
+dbWriteTable(con,"country",country,append=TRUE,overwrite=FALSE)
 
 ```
 
 
 ```{r Getting data from database}
-data<-dbGetQuery(con,'SELECT c.ctry_cd AS Country_Code,
-                  	   c.ctry_desc AS Country,
-                  	   c.status AS Status,
-                  	   i.year AS Year,
-                  	   i.ind_id AS Indicator,
-                  	   i.ind_value AS Value	
-                  FROM country AS c
-                  INNER JOIN infect_ctrl_prevent AS i
-                  ON i.ctry_cd= c.ctry_cd
-                  UNION
-                  SELECT c.ctry_cd AS Country_Code,
-                  	   c.ctry_desc AS Country,
-                  	   c.status AS Status,
-                  	   d.year AS Year,
-                  	   d.ind_id AS Indicator,
-                  	   d.ind_value AS Value	 
-                  FROM country AS c
-                  INNER JOIN disease AS d
-                  ON d.ctry_cd= c.ctry_cd
-                  UNION
-                  SELECT c.ctry_cd AS Country_Code,
-                  	   c.ctry_desc AS Country,
-                  	   c.status AS Status,
-                  	   h.year AS Year,
-                  	   h.ind_id AS Indicator,
-                  	   h.ind_value AS Value	 
-                  FROM country AS c
-                  INNER JOIN human_development AS h
-                  ON h.ctry_cd= c.ctry_cd
-                  UNION
-                  SELECT c.ctry_cd AS Country_Code,
-                  	   c.ctry_desc AS Country,
-                  	   c.status AS Status,
-                  	   s.year AS Year,
-                  	   s.ind_id AS Indicator,
-                  	   s.ind_value AS Value	
-                  FROM country AS c
-                  INNER JOIN substance_abuse AS s
-                  ON s.ctry_cd= c.ctry_cd
-                  UNION
-                  SELECT c.ctry_cd AS Country_Code,
-                  	   c.ctry_desc AS Country,
-                  	   c.status AS Status,
-                  	   sd.year AS Year,
-                  	   sd.ind_id AS Indicator,
-                  	   sd.ind_value AS Value	 
-                  FROM country AS c
-                  INNER JOIN social_determinants AS sd
-                  ON sd.ctry_cd= c.ctry_cd')
+data<-dbGetQuery(con,'SELECT * FROM indicators')
 ```
 
