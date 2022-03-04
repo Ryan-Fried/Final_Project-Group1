@@ -357,6 +357,7 @@ cancer<-subset(cancer,Year>=2000)
 
 # Handling missing values
 cancer%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+cancer<-drop_na(cancer)
 cancer%>%group_by(Year)%>%count()
 cancer<-cancer%>%complete(Year=seq(2000,2019),Country)%>%group_by(Country)%>%fill(c(Code,CANP),.direction="down") #Extending to 2019
 cancer%>%group_by(Year)%>%count()
@@ -991,7 +992,8 @@ Hap_df_m$Code<-countrycode(Hap_df_m$Country,"country.name","iso3c",warn=FALSE)
 filter(Hap_df_m,is.na(Code))
 #Drop country
 Hap_df_m<-Hap_df_m%>%drop_na(Code)%>%ungroup()%>%select(-c(Country))
-
+#Averaging based on Code to handle duplicates for Cyprus
+Hap_df_m<-Hap_df_m%>%group_by(Code,Year)%>%summarize(HAPS=mean(HAPS),.groups='keep')%>%ungroup()
 
 # Complete merge
 SD<-Reduce(function(...) merge(..., by=c("Code","Year"),all=TRUE), list(SD_WB,SD_UN,sr_m,Hap_df_m))
@@ -1029,9 +1031,6 @@ cancer_m<-cancer
 #Handling inconsistent Country values
 cancer_m$Country<-replace(cancer_m$Country,cancer_m$Country=="Micronesia (country)","Micronesia (Federated States of)")
 cancer_m$Country<-replace(cancer_m$Country,cancer_m$Country=="Timor","Timor-Leste")
-cancer_m$Country<-replace(cancer_m$Country,cancer_m$Country==c("England","Scotland","Wales"),"Great Britain")
-# Averaging by year
-cancer_m<-cancer_m%>%group_by(Country,Year,Code)%>%summarize(CANP=mean(CANP),.groups="keep")
 #Replace country code
 cancer_m$Code<-countrycode(cancer_m$Country,"country.name","iso3c",warn=FALSE)
 #Check for missing values,inconsistent data
