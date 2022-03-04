@@ -130,3 +130,7 @@ dmypy.json
 
 # Config file
 config.py
+
+#R
+.Rhistory
+
