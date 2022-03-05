@@ -166,14 +166,14 @@ hepatitis_set1<-hepatitis_set1%>%complete(Year=seq(2000,2019),Country)
 # Merge the two dataframes
 hepatitis<-merge(hepatitis_set1,hepatitis_set2,by=c("Country","Year"),all=TRUE)
 
-hepatitis$HEPB<- ifelse(is.na(hepatitis$HEPB_Code),hepatitis$Hepatitis.B,                 ifelse(is.na(hepatitis$Hepatitis.B),hepatitis$HEPB_Code,                       ifelse(abs((hepatitis$HEPB_Code-hepatitis$Hepatitis.B)/(hepatitis$HEPB_CodeB+hepatitis$Hepatitis.B))/2<0.2,(hepatitis$HEPB_Code+hepatitis$Hepatitis.B)/2,hepatitis$HEPB_Code)))                         
-hepatitis<-select(hepatitis,-c(HEPB_Code,Hepatitis.B))                         
+hepatitis$HEPB<- ifelse(is.na(hepatitis$HEPB_Code),hepatitis$Hepatitis.B,                 ifelse(is.na(hepatitis$Hepatitis.B),hepatitis$HEPB_Code,                       ifelse(abs((hepatitis$HEPB_Code-hepatitis$Hepatitis.B)/(hepatitis$HEPB_Code+hepatitis$Hepatitis.B))/2<0.2,(hepatitis$HEPB_Code+hepatitis$Hepatitis.B)/2,hepatitis$HEPB_Code)))                         
+hepatitis<-select(hepatitis,-c(HEPB_Code,Hepatitis.B))                        
 
 #Formatting
 hepatitis$Code<-toupper(hepatitis$Code)
 
 # Checking missing data
-hepatitis%>%group_by(Country)%>%miss_var_summary()%>%filter(n_miss>0)
+hepatitis%>%group_by(Country)%>%miss_var_summary()%>%filter(pct_miss>20)
 
 # Handling missing data
 
