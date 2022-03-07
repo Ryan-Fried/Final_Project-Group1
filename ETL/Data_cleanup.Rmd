@@ -1077,8 +1077,10 @@ CC_5<-select(disease_int,c(Code))
 # Join all tables based on unique entries
 CC<-union(CC_1,CC_2,CC_3,CC_4,CC_5)
 
-# Retrieve country name based on the code
+# Retrieve country name and region  based on the code
 CC$Country<-countrycode(CC$Code,"iso3c","country.name",warn=FALSE)
+CC$Region<-countrycode(CC$Code,"iso3c","region",warn=FALSE)
+
 CC%>%filter(is.na(Country))
 
 # Check duplicates
@@ -1094,7 +1096,7 @@ Status<-select(Status,-c(Country))
 country<-merge(CC,Status,by="Code",all=TRUE)
 country%>%filter(is.na(Status))%>%count()
 
-names(country)<-c("ctry_cd","ctry_desc","status")
+names(country)<-c("ctry_cd","ctry_desc","region","status")
 ```
 
 
@@ -1135,4 +1137,116 @@ dbWriteTable(con,"country",country,append=TRUE,overwrite=FALSE)
 ```{r Getting data from database}
 data<-dbGetQuery(con,'SELECT * FROM indicators')
 ```
+
+
+### Data Profiling
+```{r}
+#Data profile report
+
+introduce(data)
+```
+
+
+```{r}
+#Visual representation of data at a high level
+plot_intro(data)
+
+```
+#93% complete rows
+#1.2 missing observations
+
+```{r}
+#visualize missing profile for each feature
+
+plot_missing(data)
+
+
+```
+```{r}
+#Save results for reference
+
+profile_missing(data)
+
+```
+
+```{r}
+#Transform to wide format
+ 
+#data_wide<-data %>% 
+#  pivot_wider(id_cols = c(`country_code`, `year`), 
+#    names_from = indicator, 
+#    values_from = value)
+
+data_wide<-spread(data,key="indicator",value="value")
+
+```
+
+```{r}
+#Retrieve missing data from the wide format
+
+plot_missing(data_wide)
+
+```
+```{r}
+#Profile data from  wide format
+
+profile_missing(data_wide)
+
+```
+
+
+
+
+
+
+```{r}
+#Data Profile results
+plot_intro(data_wide)
+```
+
+```{r}
+#Create data profiling report
+create_report(data_wide)
+
+```
+```{r}
+#Drop columns for Happiness, drinking water and sanitation features data sets
+data_drop<-subset(data_wide, select = -c(HAPS,SAN, DRNW, HEPB, DB))
+
+```
+
+
+```{r}
+
+#Retrieve missing data from the wide format
+
+plot_missing(data_drop)
+
+```
+
+```{r}
+#Profile data from  wide format
+
+profile_missing(data_drop)
+
+```
+
+```{r}
+#Data Profile results
+plot_intro(data_wide)
+
+```
+```{r}
+#Create data profiling report
+create_report(data_drop)
+
+```
+```{r}
+#Save wide data in csv 
+write.csv(data_drop,"../Resources/Raw/Project_Indicators_Wide.csv")
+
+
+
+```
+
 
