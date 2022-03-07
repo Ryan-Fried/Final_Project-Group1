@@ -1,0 +1,32 @@
+Ind_cd,ind_desc
+LE ,Life Expectancy
+HDI   ,Human Development Index
+GDP ,Gross domestic product-GDP (current US$)
+GDPG  ,Gdp per capita growth (annual %)
+HE ,Current Health Expenditure (CHE) as % Gross Domestic Product 
+EDI   ,Education index
+INCI   ,Income index
+INFMR   ,Infant mortality rate 
+AMRM  ,Adult mortality rate male
+AMRF   ,Adult mortality rate male
+AMR,Adult mortality rate  
+SCH   ,Schooling
+ALC   ,Alcohol
+BCG   ,Bcg immunization coverage
+DTP  ,Dtp containing vaccine
+HEPB   ,Hepatitis B vaccination coverage
+MCV    ,Measles-containing vaccine
+PL    ,Polio vaccine coverage
+CANP    ,Cancer prevelance
+DIABP  ,Diabetes prevelance
+OBP    ,Obesity prevelance
+BMI   ,Body mass index 
+DRNW    ,Safe drinking water percentage
+POPD    ,Population density
+POPG    ,Population growth annual %
+SAN    ,Safely managed sanitation services
+SS ,Social Support
+FLC  ,Freedom to make life choice
+GN   ,Generosity
+HAPS    ,Happiness score
+COR ,Perceptions of corruption
