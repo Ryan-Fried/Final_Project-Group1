@@ -1243,7 +1243,7 @@ create_report(data_drop)
 ```
 ```{r}
 #Save wide data in csv 
-write.csv(data_drop,"../Resources/Raw/Project_Indicators_Wide.csv")
+write.csv(data_drop,"../Resources/Project_Indicators_Wide.csv")
 
 
 
