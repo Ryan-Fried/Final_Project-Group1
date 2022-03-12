@@ -1,0 +1,118 @@
+---
+title: "EDA of indicators"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Libraries
+```{r Libraries}
+# Database connection libraries
+library(odbc)
+library(RPostgres)
+# Profiling Library
+library(DataExplorer)
+```
+
+### Database Connection
+```{r Database connection}
+con<-dbConnect(RPostgres::Postgres(),
+      host     = "aws-database.csfizhoftmnn.us-east-1.rds.amazonaws.com",
+      dbname   = "Final_Project",
+      user     = rstudioapi::askForPassword("Database user"),
+      password = rstudioapi::askForPassword("Database password"),
+      port     = 5432)
+```
+
+```{r Getting data from database}
+data<-dbGetQuery(con,'SELECT * FROM indicators')
+```
+
+### Data Profiling
+```{r Long format Profiling}
+#Data profile report
+introduce(data)
+
+#Visual representation of data at a high level
+plot_intro(data)
+
+#Visualize missing profile for each feature
+plot_missing(data)
+
+#Save results for reference
+profile_missing(data)
+```
+
+```{r Wide Format Profiling}
+#Transform to wide format
+data_wide<-spread(data,key="indicator",value="value")
+
+#Retrieve missing data from the wide format
+plot_missing(data_wide)
+
+#Profile data from  wide format
+profile_missing(data_wide)
+
+#Data Profile results
+plot_intro(data_wide)
+
+```
+
+```{r Report}
+#Create data profiling report
+create_report(data_wide)
+```
+
+```{r Drop columns based on report}
+#Drop columns for Happiness, drinking water and sanitation features data sets
+data_drop<-subset(data_wide, select = -c(HAPS,SAN, DRNW, HEPB, DB))
+
+# HAPS, DRWN, SAN - Dropped due to high number of missing values
+# HEPB, DB - Dropped due to low data count and low correlation
+
+```
+
+```{r Profiling after data drop}
+#Retrieve missing data from the wide format
+plot_missing(data_drop)
+
+#Profile data from  wide format
+profile_missing(data_drop)
+
+#Data Profile results
+plot_intro(data_wide)
+```
+
+```{r Final Report}
+#Create data profiling report
+create_report(data_drop)
+```
+
+```{r Export to csv}
+# Save long data in csv
+write.csv(data,"../Resources/Project_Indicators_Long.csv",row.names = FALSE,fileEncoding="UTF-8")
+# Save wide data in csv 
+write.csv(data_drop,"../Resources/Project_Indicators_Wide.csv",row.names = FALSE,fileEncoding="UTF-8")
+```
+
+### Statistical Analysis
+```{r Data Cleaning}
+stat_data<-data_drop%>%select(-c(country_code,country,region,status,year))%>%drop_na()
+```
+
+```{r Normalization}
+min_max_norm <- function(x) {
+    (x - min(x)) / (max(x) - min(x))
+}
+
+norm<-as.data.frame(lapply(stat_data,min_max_norm))
+```
+
+```{r Multiple Linear Regression}
+summary(lm(LE~ALC+AMR+BCG+CANP+DTP+EDI+GDP+GDPG+HDI+HE+INCI+INFMR+MCV+OBP+POPD+POPG+SR,norm))
+```
+
+```{r Multiple Linear Regression - Tuning}
+summary(lm(LE~AMR+CANP+EDI+GDP+HDI+HE+INCI+INFMR+MCV+OBP+POPG,norm))
+```
