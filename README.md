@@ -1,6 +1,6 @@
 ## Topic: Life Expectancy and Related Factors
 
-The following information and as well as images and further elaboration can be found in our presentation: https://docs.google.com/presentation/d/1JxmIoD-Dh8Wg0N47L849nC_RK8qWd1ZbPwPxcmV6JiQ/edit?pli=1#slide=id.p
+The following information and as well as images and further elaboration can be found in our presentation: https://docs.google.com/presentation/d/1JxmIoD-Dh8Wg0N47L849nC_RK8qWd1ZbPwPxcmV6JiQ/edit?usp=sharing
 
 ## Why We Chose This Topic:
 
