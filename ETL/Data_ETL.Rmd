@@ -14,11 +14,10 @@ library(readxl)
 # Missing Data Analysis library
 library(naniar)
 # Interpolation library
-# Country code library
 library(imputeTS)
+# Country code library
 library(countrycode)
 # Database connection libraries
-library(odbc)
 library(RPostgres)
 ```
 
@@ -398,13 +397,13 @@ diabetes<-read.csv("../Resources/Raw/Diabetes.csv",check.names=TRUE,header = TRU
 # Streamline
 diabetes<-select(diabetes,-c(Lower.95..uncertainty.interval,  
 Upper.95..uncertainty.interval))
-names(diabetes)<-c("Country","Code","Sex","Year","DB")
+names(diabetes)<-c("Country","Code","Sex","Year","DIABP")
 
 # Transform
-diabetes<-spread(diabetes,key="Sex",value="DB")
+diabetes<-spread(diabetes,key="Sex",value="DIABP")
 
 # Average
-diabetes$DB<-(diabetes$Men+diabetes$Women)/2
+diabetes$DIABP<-(diabetes$Men+diabetes$Women)/2
 
 # Removing unwanted data
 diabetes<-diabetes%>%subset(Year>=2000)%>%select(-c(Men,Women))
@@ -765,7 +764,7 @@ CC_4<-select(vaccination,c(Code))
 CC_5<-select(disease_int,c(Code))
 
 # Join all tables based on unique entries
-CC<-union(CC_1,CC_2,CC_3,CC_4,CC_5)
+CC<-distinct(bind_rows(CC_1,CC_2,CC_3,CC_4,CC_5))
 
 # Retrieve country name and region  based on the code
 CC$Country<-countrycode(CC$Code,"iso3c","country.name",warn=FALSE)
@@ -802,6 +801,9 @@ con<-dbConnect(RPostgres::Postgres(),
 ```
 
 ```{r Publishing to Database}
+res<-dbSendQuery(con,'DELETE FROM country')
+dbClearResult(res)
+dbWriteTable(con,"country",country,append=TRUE,overwrite=FALSE)
 res<-dbSendQuery(con,'DELETE FROM human_development')
 dbClearResult(res)
 dbWriteTable(con,"human_development",human_development,append=TRUE,overwrite=FALSE)
@@ -817,9 +819,7 @@ dbWriteTable(con,"infect_ctrl_prevent",infect_ctrl_prevent,append=TRUE,overwrite
 res<-dbSendQuery(con,'DELETE FROM disease')
 dbClearResult(res)
 dbWriteTable(con,"disease",disease,append=TRUE,overwrite=FALSE)
-res<-dbSendQuery(con,'DELETE FROM country')
-dbClearResult(res)
-dbWriteTable(con,"country",country,append=TRUE,overwrite=FALSE)
+
 
 ```
 
