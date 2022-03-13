@@ -1,0 +1,24 @@
+#,ind_cd,ind_desc
+#,ALC   ,Alcohol
+#,AMR,Adult mortality rate  
+#,BCG   ,Bcg immunization coverage
+#,CANP    ,Cancer prevelance
+#,DIABP  ,Diabetes prevelance
+#,DRNW    ,Safe drinking water percentage
+#,DTP  ,Dtp containing vaccine
+#,EDI   ,Education index
+#,GDP ,Gross domestic product-GDP (current US$)
+#,GDPG  ,Gdp per capita growth (annual %)
+#,HAPS    ,Happiness score
+#,HDI   ,Human Development Index
+#,HE ,Current Health Expenditure (CHE) as % Gross Domestic Product 
+#,HEPB   ,Hepatitis B vaccination coverage
+#,INCI   ,Income index
+#,INFMR   ,Infant mortality rate 
+#,LE,Life Expectancy
+#,MCV    ,Measles-containing vaccine
+#,OBP    ,Obesity prevelance
+#,POPD    ,Population density
+#,POPG    ,Population growth annual %
+#,SAN    ,Safely managed sanitation services
+#,SR,Ratio of male to female
