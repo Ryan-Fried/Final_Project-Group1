@@ -1,117 +1,119 @@
-
 Indicator codes and descriptions:
-
-# Indicator Codes
-# LE code ; Description -life expectancy (human_development)
-# HDI code ; Description - human development Index (human_development)
-# GDP code ; Description - gross domestic product-GDP (current US$) (human_development)
-# GDPG Code ; Description - gdp per capita growth (annual %) (human_development)
-# HE Code ; Description - current Health Expenditure (CHE) as % Gross Domestic Product (human_development)
-# EDI code ; Description - education index (human_development)
-# INCI code ; Description - income index (human development)
-# INFMR code ; Description - Infant mortality rate (human development)
-# AMRM code ; Description -adult mortality Rate male (human development)
-# AMRF code ; Description - adult mortality Rate female (human development)
-# SCH code ; Description - schooling (human development)
-# ALC code ; Description - alcohol (substance_abuse)
-# BCG code ; Description - bcg immunization coverage (infect_ctrl_prevent)
-# DTP code ; Description - dtp-containing vaccine (infect_ctrl_prevent)
-# HEPB code ; Description - hepatitis B vaccination coverage (infect_ctrl_prevent)
-# MCV code ; Description - measles-containing vaccine (infect_ctrl_prevent)
-# PL code ; Description - polio vaccine coverage (infect_ctrl_prevent)
-# CANP code ; Description - cancer prevelance (disease)
-# DIABP code ; Description - diabetes prevelance (disease)
-# OBP code ; Description - obesity prevelance (disease)
-# BMI code ; Description - body mass index (disease) 
-# DRNW code ; Description - safe drinking water percentage (social_determinants)
-# POPD code ; Description - population density (social_determinants)
-# POPG code ; Description - population growth annual % (social_determinants)
-# SAN code ; Description - safely managed sanitation services (social_determinants)
-# SS code ; Description - social support (social determinants)
-# FLC code ; Description - Freedom to make life choices (social determinants)
-# GN code ; Description - generosity (social determinants)
-# HAPS code ; Description - happiness score (social determinants)
-# COR code ; Description - perceptions of corruption (social determinants)
-
+List of Indicators code and descriptions
+ind_cd	ind_desc
+ALC   	Alcohol consumption
+AMR	Adult mortality rate  
+BCG   	Bcg immunization coverage
+CANP    Cancer prevelance
+DIABP  	Diabetes prevelance
+DRNW    Safe drinking water percentage
+DTP  	Dtp containing vaccine
+EDI   	Education index
+GDP 	Gross domestic product-GDP (current US$)
+GDPG  	Gdp per capita growth (annual %)
+HAPS    Happiness score
+HDI   	Human Development Index
+HE 	Current Health Expenditure (CHE) as % Gross Domestic Product 
+HEPB   	Hepatitis B vaccination coverage
+INCI   	Income index
+INFMR   Infant mortality rate 
+LE	Life Expectancy
+MCV    	Measles-containing vaccine
+OBP    	Obesity prevelance
+POPD    Population density
+POPG    Population growth annual %
+SAN    	Safely managed sanitation services
+SR	Ratio of male to female
+ 
 
 CREATE TABLE "country" (
-    "id" int   NOT NULL,
     "ctry_cd" varchar(100)   NOT NULL,
     "ctry_desc" varchar(200)   NOT NULL,
     "status" varchar(100)   NOT NULL,
     CONSTRAINT "pk_country" PRIMARY KEY (
-        "id"
+        "ctry_cd"
      )
 );
 
 CREATE TABLE "indicator" (
-    "id" int   NOT NULL,
     "ind_cd" varchar(50)   NOT NULL,
     "ind_desc" varchar(150)   NOT NULL,
     CONSTRAINT "pk_indicator" PRIMARY KEY (
-        "id"
+        "ind_cd"
      )
 );
 
 
 CREATE TABLE "disease" (
     "id" int  GENERATED ALWAYS AS IDENTITY,
-    "ctry_id" int   NOT NULL,
+    "ctry_cd" text   NOT NULL,
     "year" int   NOT NULL,
-    "ind_id" int   NOT NULL,
-    "ind_val" decimal(25,6)   NOT NULL,
+    "ind_cd" text   NOT NULL,
+    "ind_value" decimal(25,6)   NOT NULL,
     CONSTRAINT "pk_disease" PRIMARY KEY ("id"),
-    CONSTRAINT "fk_human_development_country_id" FOREIGN  KEY("ctry_id") REFERENCES "country" ("id"),
-	CONSTRAINT "fk_human_development_ind_id" FOREIGN  KEY("ind_id") REFERENCES "indicator" ("id"));
+    CONSTRAINT "fk_disease_country_cd" FOREIGN  KEY("ctry_cd") REFERENCES "country" ("ctry_cd"),
+    CONSTRAINT "fk_disease_ind_cd" FOREIGN  KEY("ind_cd") REFERENCES "indicator" ("ind_cd"));
 	
-	 
 	
-	CREATE TABLE "infect_ctrl_prevent" (
+ALTER TABLE IF EXISTS public.disease
+    OWNER to postgres;
+	
+CREATE TABLE "infect_ctrl_prevent" (
     "id" int   GENERATED ALWAYS AS IDENTITY,
-    "ctry_id" int   NOT NULL,
+    "ctry_cd" text   NOT NULL,
     "year" int   NOT NULL,
-    "ind_id" int   NOT NULL,
-    "ind_val" decimal(25,6)   NOT NULL,
+    "ind_cd" text   NOT NULL,
+    "ind_value" decimal(25,6)   NOT NULL,
     CONSTRAINT "pk_infect_ctrl_prevent" PRIMARY KEY ("id"),
-    CONSTRAINT "fk_infect_ctrl_prevent_country_id" FOREIGN  KEY("ctry_id") REFERENCES "country" ("id"),
-	CONSTRAINT "fk_infect_ctrl_prevent_ind_id" FOREIGN  KEY("ind_id") REFERENCES "indicator" ("id"));
+    CONSTRAINT "fk_infect_ctrl_prevent_country_cd" FOREIGN  KEY("ctry_cd") REFERENCES "country" ("ctry_cd"),
+    CONSTRAINT "fk_infect_ctrl_prevent_ind_cd" FOREIGN  KEY("ind_cd") REFERENCES "indicator" ("ind_cd"));
 
+ALTER TABLE IF EXISTS public.infect_ctrl_prevent
+    OWNER to postgres;
 
 
 CREATE TABLE "human_development" (
     "id" int   GENERATED ALWAYS AS IDENTITY,
-    "ctry_id" int   NOT NULL,
+    "ctry_cd" text   NOT NULL,
     "year" int   NOT NULL,
-    "ind_id" int   NOT NULL,
-    "ind_val" decimal(25,6)   NOT NULL,
+    "ind_cd" text   NOT NULL,
+    "ind_value" decimal(25,6)   NOT NULL,
     CONSTRAINT "pk_human_development" PRIMARY KEY ("id"),
-	CONSTRAINT "fk_human_development_country_id" FOREIGN  KEY("ctry_id") REFERENCES "country" ("id"),
-	CONSTRAINT "fk_human_development_ind_id" FOREIGN  KEY("ind_id") REFERENCES "indicator" ("id"));
+    CONSTRAINT "fk_human_development_country_cd" FOREIGN  KEY("ctry_cd") REFERENCES "country" ("ctry_cd"),
+    CONSTRAINT "fk_human_development_ind_cd" FOREIGN  KEY("ind_cd") REFERENCES "indicator" ("ind_cd"));
 	
 	
+ALTER TABLE IF EXISTS public.human_development
+OWNER to postgres;
 	
-	CREATE TABLE "substance_abuse" (
+	
+CREATE TABLE "substance_abuse" (
     "id" int   GENERATED ALWAYS AS IDENTITY,
-    "ctry_id" int   NOT NULL,
+    "ctry_cd" text   NOT NULL,
     "year" int   NOT NULL,
-    "ind_id" int  NOT NULL,
-    "ind_val" decimal(25,6)   NOT NULL,
+    "ind_cd" text  NOT NULL,
+    "ind_value" decimal(25,6)   NOT NULL,
     CONSTRAINT "pk_substance_abuse" PRIMARY KEY ("id"),
- 	CONSTRAINT "fk_substance_abuse_country_id" FOREIGN  KEY("ctry_id") REFERENCES "country" ("id"),
-	CONSTRAINT "fk_substance_abuse_ind_id" FOREIGN  KEY("ind_id") REFERENCES "indicator" ("id"));
+    CONSTRAINT "fk_substance_abuse_country_cd" FOREIGN  KEY("ctry_cd") REFERENCES "country" ("ctry_cd"),
+    CONSTRAINT "fk_substance_abuse_ind_cd" FOREIGN  KEY("ind_cd") REFERENCES "indicator" ("ind_cd"));
 	
 	
 	
-	CREATE TABLE "social_determinants" (
+ALTER TABLE IF EXISTS public.substance_abuse
+OWNER to postgres;
+	
+CREATE TABLE "social_determinants" (
     "id" int   GENERATED ALWAYS AS IDENTITY,
-    "ctry_id" int   NOT NULL,
+    "ctry_cd" text  NOT NULL,
     "year" int   NOT NULL,
-    "ind_id" int   NOT NULL,
-    "ind_val" decimal(25,6)   NOT NULL,
+    "ind_cd" text   NOT NULL,
+    "ind_value" decimal(25,6)   NOT NULL,
     CONSTRAINT "pk_social_determinants" PRIMARY KEY ("id"),
-    CONSTRAINT "fk_social_determinants_country_id" FOREIGN  KEY("ctry_id") REFERENCES "country" ("id"),
-	CONSTRAINT "fk_social_determinants_ind_id" FOREIGN  KEY("ind_id") REFERENCES "indicator" ("id"));
+    CONSTRAINT "fk_social_determinants_country_cd" FOREIGN  KEY("ctry_cd") REFERENCES "country" ("ctry_cd"),
+    CONSTRAINT "fk_social_determinants_ind_cd" FOREIGN  KEY("ind_cd") REFERENCES "indicator" ("ind_cd"));
 
  
- 
+ALTER TABLE IF EXISTS public.social_determinants
+OWNER to postgres;
+	
 	
