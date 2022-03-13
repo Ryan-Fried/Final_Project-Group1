@@ -63,6 +63,9 @@ Libraries used: tidyverse, dplyr, naniar, TSImpute, Countrycoder, RPostgres
 - Merged data into one of 5 categories and converted to long format
 - Published to database
 
+## Database Structure
+![ERD_Final](https://user-images.githubusercontent.com/91569387/158080110-162fc184-f7db-4ec5-97f5-e0d4f5e80e97.PNG)
+
 ## EDA
 File: https://github.com/Ryan-Fried/Final_Project-Group1/blob/ccce2ee579de991f37b3af4be9cd54204bbee535/EDA/Data_EDA.Rmd
 
@@ -115,6 +118,10 @@ _Training and Testing:_ Split the data into training and testing> Normalized the
 
 Result: The high R2 score, testing score and low mean residual error indicate that the model is a well performing model
 
+Why this model?:
+- Life expectancy is continuous variable requiring the use of a regression model
+- Multiple features were involved, requiring the use of multiple linear regression
+
 ### Predicting Status
 Algorithm: Random Forest Classifier
 
@@ -122,9 +129,19 @@ _Preprocessing:_ ETL in R>Dropped NAs> Dropped all description columns except st
 _Feature Engineering and Selection:_ Set Status as target and all other indicators as X features
 _Training and Testing:_ Split the data into training and testing> Normalized the data using MinMaxScaler> Trained the model using training dataset> Predicted the data using testing dataset> Studied accuracy score, confusion matrix and classification report> Studied feature importance
 
+Why this model?:
+- A recommended model for classification data
+- Compared to Logistic Regression model, provided better accuracy and is less prone to overfitting
+
+
 ### Studying Clusters
 Algorithm: KMeans Clustering
 
 _Preprocessing:_ ETL in R>Dropped NAs> Dropped all description columns except status> Converted status to numeric using OneHotEncoder and merged it to main dataframe> Normalized the data
 _Feature Engineering and Selection:_ Dimensionality reduction to 3 using PCA> Calculated elbow curve to determine number of clusters  
 _Clustering:_  Performed KMeans clustering and determined group for each dataset> Merged data back to main dataframe> Created hvplot 
+
+Why this model?:
+- Model commonly used for clustering data
+- Model is relatively fast, but lacks consistency and repeatability since it starts with a random centre
+
