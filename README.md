@@ -1,6 +1,4 @@
-# Deliverable 1: Presentation
- 
-## Topic: Life Expectancy and Happiness Around The World
+## Topic: Life Expectancy and Related Factors
 
 ## Why We Chose This Topic:
 
@@ -16,10 +14,13 @@ https://www.kaggle.com/unsdsn/world-happiness
 
 ## What Questions Do We Hope to Answer?
 
-- We intend to explore the relationship between life expectancy and the various features that effect that metric. In doing so we are asking which factors, if any, have the most significant influence on life expectancy, and which of these factors are closely correlated with each other. For example, we are particularly interested in examining the relationship between life expectancy and Happiness Score.
-- We will attempt to predict life expectancy using these various factors. Additionally, we will attempt to predict the development status of a country using life expectancy and the other related factors. 
-- We will use the process of clustering to explore the relationships, similarities, and differences between countries as would be determined by these factors.
-- Essentially, we hope that by posing these questions and performing this analysis, we might be able to determine which factors carry the most weight in influenceing each other, with life expectancy as our central focus. As this data represents reality, it may also serve real world applications. If a country were to strive to improve life expectancy, or evolve any one of these metrics, our project may shed some light on the most direct and effective ways of doing so and improving the lives of its citizens.
+- What is the relationship between life expectancy and some development, socio-economic and health factors?
+- Can we predict life expectancy using some of the development, socio-economic and health factors?
+- Can we predict development status of a country using some of the same indicators?
+- What is the relationship between life expectancy and the happiness score? Can we predict happiness based on life expectancy?
+ - How do the countries cluster based on the available indicators?
+ - How does life expectancy look like around the world?
+
 
 ## Communication Protocols?
 
