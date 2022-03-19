@@ -23,30 +23,6 @@ To study the correlation between life expectancy and happiness we will be using 
  - How do the countries cluster based on the available indicators?
  - How does life expectancy look like around the world?
 
-## Communication Protocols?
-
-The team is mainly communicating via Slack. Additionally, we have been and plan to meet continually on Zoom, both in and out of class time. We've broken down the duties each week according to the suggestion of the module. These roles are as follows: 
-- Person 1 (Douglas)
-  - Week 1 - Identify Tools and Tech
-  - Week 2 - Machine Learning
-  - Week 3 - GitHub
-  - Week 4 - ReadMe
-- Person 2 (Aparna)
-  - Week 1 - SQL DB Framework
-  - Week 2 - Dashboard Ideas
-  - Week 3 - Dashboard Build
-  - Week 4 - GitHub - Verify and Finalize
-- Person 3 (Dhanushree)
-  - Week 1 - Machine Learning
-  - Week 2 - DB Connections Loading
-  - Week 3 - Testing Model
-  - Week 4 - Dashboard Fine-Tuning
-- Person 4 (Ryan)
-  - Week 1 - GitHub
-  - Week 2 - Visualization Ideas
-  - Week 3 - Presentation
-  - Week 4 - Helping Other Team Members
-
 ## Project Design
 Outline of the workflow we have implemented for our project:
 ![Project Design](https://github.com/Ryan-Fried/Final_Project-Group1/blob/main/Images/Prog_Design.png)
