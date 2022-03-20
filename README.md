@@ -89,9 +89,13 @@ _Feature Engineering and Selection:_ Data profiling and statistical analysis> Dr
 _Training and Testing:_ Split the data into training and testing> Normalized the data using MinMaxScaler> Trained the model using training dataset> Predicted the data using testing dataset
 
 **R2 Score:** 0.995
+
 **Mean Residual Error:** 0.462
+
 **Training Score:** 0.994
+
 **Testing Score:** 0.995
+
 **Intercept**: 58.169
 
 Result: The high R2 score, testing score and low mean residual error indicate that the model is a well performing model
@@ -109,10 +113,14 @@ _Feature Engineering and Selection:_ Set Status as target and all other indicato
 
 _Training and Testing:_ Split the data into training and testing> Normalized the data using MinMaxScaler> Trained the model using training dataset> Predicted the data using testing dataset> Studied accuracy score, confusion matrix and classification report> Studied feature importance
 
-**Accuracy Score:**1.00
+**Accuracy Score:** 1.00
+
 **True Positive:** 56
+
 **False Positive:** 0
+
 **True Negative:** 499
+
 **False Negative:** 0
 
 Result: Random Forest Classifier resulted in a accuracy score of 1, indicating that the model performed well 
@@ -132,7 +140,9 @@ _Feature Engineering and Selection:_ Dimensionality reduction to 3 using PCA> Ca
 _Clustering:_  Performed KMeans clustering and determined group for each dataset> Merged data back to main dataframe> Created hvplot 
 
 **PCA**: 4 components
+
 **Explained Variance Ratio:** 0.84
+
 **K clsuters:** 3, based on Elbow curve
 
 Result: 
