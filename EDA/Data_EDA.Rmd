@@ -65,7 +65,7 @@ create_report(data_wide)
 ```
 
 ```{r Drop columns based on report}
-#Drop columns for Happiness, drinking water and sanitation features data sets
+#Drop columns based on report
 data_drop<-subset(data_wide, select = -c(HAPS,SAN, DRNW, HEPB, DIABP))
 
 # HAPS, DRWN, SAN - Dropped due to high number of missing values
@@ -102,10 +102,12 @@ stat_data<-data_drop%>%select(-c(country_code,country,region,status,year))%>%dro
 ```
 
 ```{r Normalization}
+# Create function
 min_max_norm <- function(x) {
     (x - min(x)) / (max(x) - min(x))
 }
 
+# Apply function
 norm<-as.data.frame(lapply(stat_data,min_max_norm))
 ```
 

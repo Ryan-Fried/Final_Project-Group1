@@ -150,8 +150,10 @@ UNDPCleanerA<-function(df){
 CountryCoder<-function(df){
   #Get validated country code
   df$Code<-countrycode(df$Country,"country.name","iso3c",warn=FALSE)
+
   #Check for missing code values, inconsistent country names
   print(filter(df,is.na(Code)&Year==2010))
+  
   #Drop the missing code values and country column
   df<-df%>%drop_na(Code)%>%ungroup()%>%select(-c(Country))
   
@@ -247,7 +249,11 @@ hepatitis_set1<-hepatitis_set1%>%complete(Year=seq(2000,2019),Country)
 # Merge the two dataframes
 hepatitis<-merge(hepatitis_set1,hepatitis_set2,by=c("Country","Year"),all=TRUE)
 
-hepatitis$HEPB<- ifelse(is.na(hepatitis$HEPB_Code),hepatitis$Hepatitis.B,                 ifelse(is.na(hepatitis$Hepatitis.B),hepatitis$HEPB_Code,                   ifelse(abs((hepatitis$HEPB_Code-hepatitis$Hepatitis.B)/(hepatitis$HEPB_Code+hepatitis$Hepatitis.B))/2<0.2,(hepatitis$HEPB_Code+hepatitis$Hepatitis.B)/2,hepatitis$HEPB_Code))) 
+hepatitis$HEPB<- ifelse(is.na(hepatitis$HEPB_Code),hepatitis$Hepatitis.B,
+                 ifelse(is.na(hepatitis$Hepatitis.B),hepatitis$HEPB_Code, 
+                 ifelse(abs((hepatitis$HEPB_Code-hepatitis$Hepatitis.B)/(hepatitis$HEPB_Code+hepatitis$Hepatitis.B))/2<0.2,
+                 (hepatitis$HEPB_Code+hepatitis$Hepatitis.B)/2,
+                 hepatitis$HEPB_Code))) 
 
 # Drop unwanted columns
 hepatitis<-select(hepatitis,-c(HEPB_Code,Hepatitis.B))                        

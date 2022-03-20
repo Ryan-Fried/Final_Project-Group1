@@ -1,6 +1,6 @@
 ## Topic: Life Expectancy and Related Factors
 
-The following information and as well as images and further elaboration can be found in our presentation: https://docs.google.com/presentation/d/1JxmIoD-Dh8Wg0N47L849nC_RK8qWd1ZbPwPxcmV6JiQ/edit?usp=sharing
+The following information and as well as images and further elaboration can be found in our presentation: [Google Slides Presentation](https://docs.google.com/presentation/d/1JxmIoD-Dh8Wg0N47L849nC_RK8qWd1ZbPwPxcmV6JiQ/edit?usp=sharing)
 
 ## Why We Chose This Topic:
 
@@ -12,7 +12,7 @@ Our main dataset, Life Expectancy data from the World Bank, is the baseline for 
 [Source_References.xlsx](https://github.com/Ryan-Fried/Final_Project-Group1/files/8149293/Source_References.xlsx)
 
 To study the correlation between life expectancy and happiness we will be using this dataset:
-https://www.kaggle.com/unsdsn/world-happiness
+[World Happiness Report- Kaggle](https://www.kaggle.com/unsdsn/world-happiness)
 
 ## What Questions Do We Hope to Answer?
 
@@ -22,30 +22,6 @@ https://www.kaggle.com/unsdsn/world-happiness
 - What is the relationship between life expectancy and the happiness score? Can we predict happiness based on life expectancy?
  - How do the countries cluster based on the available indicators?
  - How does life expectancy look like around the world?
-
-## Communication Protocols?
-
-The team is mainly communicating via Slack. Additionally, we have been and plan to meet continually on Zoom, both in and out of class time. We've broken down the duties each week according to the suggestion of the module. These roles are as follows: 
-- Person 1 (Douglas)
-  - Week 1 - Identify Tools and Tech
-  - Week 2 - Machine Learning
-  - Week 3 - GitHub
-  - Week 4 - ReadMe
-- Person 2 (Aparna)
-  - Week 1 - SQL DB Framework
-  - Week 2 - Dashboard Ideas
-  - Week 3 - Dashboard Build
-  - Week 4 - GitHub - Verify and Finalize
-- Person 3 (Dhanushree)
-  - Week 1 - Machine Learning
-  - Week 2 - DB Connections Loading
-  - Week 3 - Testing Model
-  - Week 4 - Dashboard Fine-Tuning
-- Person 4 (Ryan)
-  - Week 1 - GitHub
-  - Week 2 - Visualization Ideas
-  - Week 3 - Presentation
-  - Week 4 - Helping Other Team Members
 
 ## Project Design
 Outline of the workflow we have implemented for our project:
@@ -107,14 +83,16 @@ Objectives:
 Algorithm: Multiple Linear Regression
 
 _Preprocessing:_ ETL in R>Dropped NAs> Dropped description columns
+
 _Feature Engineering and Selection:_ Data profiling and statistical analysis> Dropped columns based on insufficient data and low p-value> Set Life expectancy as Y and remaining 11 indicators as X features
+
 _Training and Testing:_ Split the data into training and testing> Normalized the data using MinMaxScaler> Trained the model using training dataset> Predicted the data using testing dataset
 
 **R2 Score:** 0.995
-**Mean Residual Error:** 0.41
+**Mean Residual Error:** 0.462
 **Training Score:** 0.994
 **Testing Score:** 0.995
-**Intercept**: 58
+**Intercept**: 58.169
 
 Result: The high R2 score, testing score and low mean residual error indicate that the model is a well performing model
 
@@ -126,8 +104,18 @@ Why this model?:
 Algorithm: Random Forest Classifier
 
 _Preprocessing:_ ETL in R>Dropped NAs> Dropped all description columns except status
+
 _Feature Engineering and Selection:_ Set Status as target and all other indicators as X features
+
 _Training and Testing:_ Split the data into training and testing> Normalized the data using MinMaxScaler> Trained the model using training dataset> Predicted the data using testing dataset> Studied accuracy score, confusion matrix and classification report> Studied feature importance
+
+**Accuracy Score:**1.00
+**True Positive:** 56
+**False Positive:** 0
+**True Negative:** 499
+**False Negative:** 0
+
+Result: Random Forest Classifier resulted in a accuracy score of 1, indicating that the model performed well 
 
 Why this model?:
 - A recommended model for classification data
@@ -138,8 +126,18 @@ Why this model?:
 Algorithm: KMeans Clustering
 
 _Preprocessing:_ ETL in R>Dropped NAs> Dropped all description columns except status> Converted status to numeric using OneHotEncoder and merged it to main dataframe> Normalized the data
+
 _Feature Engineering and Selection:_ Dimensionality reduction to 3 using PCA> Calculated elbow curve to determine number of clusters  
+
 _Clustering:_  Performed KMeans clustering and determined group for each dataset> Merged data back to main dataframe> Created hvplot 
+
+**PCA**: 4 components
+**Explained Variance Ratio:** 0.84
+**K clsuters:** 3, based on Elbow curve
+
+Result: 
+- Cluster 2 stands out separately and is mainly comprised of countries in the Europe and Central Asia region
+- Cluster 0 is mainly comprised of Sub-Saharan Africa
 
 Why this model?:
 - Model commonly used for clustering data
