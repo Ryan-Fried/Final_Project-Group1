@@ -40,4 +40,4 @@ from sklearn.metrics import accuracy_score,confusion_matrix, classification_repo
 
 # Importing sqlalchemy libraries
 from sqlalchemy import create_engine
-import psycopg2
+
