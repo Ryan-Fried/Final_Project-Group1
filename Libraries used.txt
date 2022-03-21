@@ -39,5 +39,5 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.metrics import accuracy_score,confusion_matrix, classification_report
 
 # Importing sqlalchemy libraries
-from sqlalchemy import create_engine
+
 
