@@ -1,0 +1,41 @@
+# R libraries
+
+## Analysis and Exploration
+tidyverse
+dplyr
+readxl
+
+## Missing Data Analysis library
+naniar
+
+## Interpolation library
+imputeTS
+
+## Country code library
+countrycode
+
+## Database connection libraries
+RPostgres
+
+## Data Profiling
+DataExplorer
+
+# Python libraries
+
+## Analysis and Exploration
+pandas
+numpy
+math
+
+## Plot libraries
+matplotlib
+seaborn
+pyviz hvplot
+plotly
+
+## Database connection libraries
+sqlalchemy
+psycopg2
+
+## Machine learning libraries
+scikit-learn
