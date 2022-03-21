@@ -1,0 +1,43 @@
+Github Week3
+Requirements
+
+Python Library
+NumPy
+Matplotlib
+
+R Libraries
+Tidyverse
+
+# Database connection libraries
+RPostgres
+
+# Profiling Library
+DataExplorer
+dplyr
+readxl
+
+# Missing Data Analysis library
+naniar
+
+# Interpolation library
+imputeTS
+
+# Country code library
+countrycode
+
+# Database connection libraries
+RPostgres
+
+# Pandas libraries
+Pandas
+Scikit-learn
+Plotly
+hvplot
+Seaborn
+sklearn
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.metrics import accuracy_score,confusion_matrix, classification_report
+
+# Importing sqlalchemy libraries
+
+
