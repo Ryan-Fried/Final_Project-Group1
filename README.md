@@ -156,5 +156,5 @@ Why this model?:
 ## Dashboard
 Development is in progress
 
-[Tableau Dashboard](https://public.tableau.com/app/profile/aparna.nair1988/viz/LifeExpectancy_16471968963990/LifeExpectancy?publish=yes)
+[Tableau Dashboard](https://public.tableau.com/app/profile/aparna.nair1988/viz/Main_Storyboard/Main_Storyboard?publish=yes)
 
