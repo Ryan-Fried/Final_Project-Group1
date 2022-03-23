@@ -30,7 +30,7 @@ Outline of the workflow we have implemented for our project:
 ## ETL
 File: [ETL](https://github.com/Ryan-Fried/Final_Project-Group1/blob/ccce2ee579de991f37b3af4be9cd54204bbee535/ETL/Data_ETL.Rmd)
 
-Language: R
+Language: R<br />
 Libraries used: tidyverse, dplyr, naniar, TSImpute, Countrycoder, RPostgres
 
 ### The Process
@@ -45,8 +45,8 @@ Libraries used: tidyverse, dplyr, naniar, TSImpute, Countrycoder, RPostgres
 ## EDA
 File: [Exploratory Analysis](https://github.com/Ryan-Fried/Final_Project-Group1/blob/ccce2ee579de991f37b3af4be9cd54204bbee535/EDA/Data_EDA.Rmd)
 
-Language: R, Python
-Libraries used: 
+Language: R, Python<br />
+Libraries used:<br />
   R: tidyverse, RPostgres, DataExplorer
   Python: pandas, matplotlib, seaborn
 
@@ -60,7 +60,7 @@ Libraries used:
 ## Life Expectancy and Happiness
 File: [Happiness Study](https://github.com/Ryan-Fried/Final_Project-Group1/blob/ccce2ee579de991f37b3af4be9cd54204bbee535/HAPS_LE_Regression/HAPS_LE_regression_Ryan.ipynb)
 
-Language: Python
+Language: Python<br />
 Libraries used: pandas, matplotlib, seaborn, sklearn, sqlalchemy
 
 ### Analysis
@@ -71,7 +71,7 @@ Libraries used: pandas, matplotlib, seaborn, sklearn, sqlalchemy
 ## Machine Learning
 File: [Predictive Analysis](https://github.com/Ryan-Fried/Final_Project-Group1/blob/ccce2ee579de991f37b3af4be9cd54204bbee535/Machine%20Learning/Predictive_Analysis.ipynb)
 
-Language: Python
+Language: Python<br />
 Libraries used: pandas, matplotlib, sklearn
 
 Objectives:
