@@ -131,11 +131,9 @@ _Feature Engineering and Selection:_ Dimensionality reduction to 3 using PCA> Ca
 
 _Clustering:_  Performed KMeans clustering and determined group for each dataset> Merged data back to main dataframe> Created hvplot 
 
-**PCA**: 4 components
-
-**Explained Variance Ratio:** 0.84
-
-**K clsuters:** 3, based on Elbow curve
+**PCA**: 4 components<br /> 
+**Explained Variance Ratio:** 0.84<br />
+**K clsuters:** 3, based on Elbow curve<br />
 
 Result: 
 - Cluster 2 stands out separately and is mainly comprised of countries in the Europe and Central Asia region
@@ -146,7 +144,6 @@ Why this model?:
 - Model is relatively fast, but lacks consistency and repeatability since it starts with a random centre
 
 ## Dashboard
-Development is in progress
 
 [Tableau Dashboard](https://public.tableau.com/app/profile/dhanushree/viz/LifeExpectancy_16478476299440/Main?publish=yes)
 
