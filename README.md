@@ -47,7 +47,7 @@ File: [Exploratory Analysis](https://github.com/Ryan-Fried/Final_Project-Group1/
 
 Language: R, Python<br />
 Libraries used:<br />
-  R: tidyverse, RPostgres, DataExplorer
+  R: tidyverse, RPostgres, DataExplorer<br />
   Python: pandas, matplotlib, seaborn
 
 ### Analysis
@@ -88,15 +88,11 @@ _Feature Engineering and Selection:_ Data profiling and statistical analysis> Dr
 
 _Training and Testing:_ Split the data into training and testing> Normalized the data using MinMaxScaler> Trained the model using training dataset> Predicted the data using testing dataset
 
-**R2 Score:** 0.995
-
-**Mean Residual Error:** 0.462
-
-**Training Score:** 0.994
-
-**Testing Score:** 0.995
-
-**Intercept**: 58.169
+**R2 Score:** 0.995<br />
+**Mean Residual Error:** 0.462<br />
+**Training Score:** 0.994<br />
+**Testing Score:** 0.995<br />
+**Intercept**: 58.169<br />
 
 Result: The high R2 score, testing score and low mean residual error indicate that the model is a well performing model
 
@@ -113,15 +109,11 @@ _Feature Engineering and Selection:_ Set Status as target and all other indicato
 
 _Training and Testing:_ Split the data into training and testing> Normalized the data using MinMaxScaler> Trained the model using training dataset> Predicted the data using testing dataset> Studied accuracy score, confusion matrix and classification report> Studied feature importance
 
-**Accuracy Score:** 1.00
-
-**True Positive:** 56
-
-**False Positive:** 0
-
-**True Negative:** 499
-
-**False Negative:** 0
+**Accuracy Score:** 1.00<br />
+**True Positive:** 56<br />
+**False Positive:** 0<br />
+**True Negative:** 499<br />
+**False Negative:** 0<br />
 
 Result: Random Forest Classifier resulted in a accuracy score of 1, indicating that the model performed well 
 
@@ -139,11 +131,9 @@ _Feature Engineering and Selection:_ Dimensionality reduction to 3 using PCA> Ca
 
 _Clustering:_  Performed KMeans clustering and determined group for each dataset> Merged data back to main dataframe> Created hvplot 
 
-**PCA**: 4 components
-
-**Explained Variance Ratio:** 0.84
-
-**K clsuters:** 3, based on Elbow curve
+**PCA**: 4 components<br /> 
+**Explained Variance Ratio:** 0.84<br />
+**K clsuters:** 3, based on Elbow curve<br />
 
 Result: 
 - Cluster 2 stands out separately and is mainly comprised of countries in the Europe and Central Asia region
@@ -154,7 +144,6 @@ Why this model?:
 - Model is relatively fast, but lacks consistency and repeatability since it starts with a random centre
 
 ## Dashboard
-Development is in progress
 
 [Tableau Dashboard](https://public.tableau.com/app/profile/dhanushree/viz/LifeExpectancy_16478476299440/Main?publish=yes)
 
