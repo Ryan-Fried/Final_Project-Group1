@@ -1,8 +1,0 @@
-Tools Used for Final project:
-
-PostgreSQL (Database)
-R (clean and Prepare data)
-Python (Coding Language - Database Connection, ETL, Predictive Analysis)
-Tableau (Visualizations)
-AWS (Cloud Server)
-Jupyter Notebook (ETL and Predictive Analysis)
